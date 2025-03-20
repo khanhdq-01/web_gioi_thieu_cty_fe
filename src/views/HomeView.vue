@@ -188,7 +188,7 @@ export default {
       roleId: '',
       items: [],
       bestSellingProducts: [],
-      url: 'http://localhost/web_order_food/be_order_food/storage/app/public/items/'
+      url: 'http://localhost/web_ban_hang/web_ban_hang_backend/storage/app/public/items/'
     }
   },
   mounted() {
@@ -197,7 +197,7 @@ export default {
     if (!this.userName || this.userName === '' || this.userName == null) {
       router.push({ name: 'login' });
     }
-    if (this.roleId != 4) {
+    if (this.roleId != 1) {
       router.push({ name: 'home' });
     }
     this.getItems();

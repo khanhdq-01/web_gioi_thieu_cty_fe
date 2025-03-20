@@ -1,136 +1,188 @@
-<template lang="">
-    <NavBar :name=userName :role="roleId" />
-    <div class="container mt-5">
-        <div class="col-12 col-lg-6">
-            <h3> Update Product</h3>
-            <form @submit.prevent="updateProduct()">
-                <div class="mb-3">
-                    <label for="name">Name</label><br>
-                    <input type="text" class="form-control" v-model="item.name" id="name" placeholder="Product Name"/>
-                </div>
-                <div class="mb-3">
-                    <label for="price">Price</label><br>
-                    <input type="number" class="form-control" v-model="item.price" id="price" placeholder="Product price"/>
-                </div>
-                <div class="mb-3">
-                    <label for="price">Current Image</label><br>
-                    <img v-if="item.image" :src="url+item.image" class="object-fit-cover" style="width:100px; height:100px" >
-                    <img v-else src="@/assets/images/no-image.png" class="object-fit-cover" style="width:100px; height:100px" >
-                </div>
-                <div class="mb-3">
-                    <label for="image">Image</label><br>
-                    <input type="file" class="form-control" @change="imageChanged($event)" id="image"/>
-                </div>
-                <div class="mb-3">
-                  <button class="btn btn-success form-control" type="submit">Save</button>
-                </div>
-            </form>
+<template>
+    <div>
+      <NavBar :name="userName" :role="roleId" />
+      <div class="container mt-5">
+        <div class="col-12 col-lg-6 mx-auto">
+          <h3 class="mb-4 text-center">Cập nhật sản phẩm</h3>
+          <form @submit.prevent="updateProduct">
+            <div class="mb-3">
+              <label for="name" class="form-label">Tên sản phẩm</label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="item.name"
+                id="name"
+                placeholder="Nhập tên sản phẩm"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label">Giá</label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="item.price"
+                id="price"
+                placeholder="Nhập giá sản phẩm"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="current-image" class="form-label">Hình ảnh hiện tại</label>
+              <div>
+                <img
+                  v-if="item.image"
+                  :src="url + item.image"
+                  class="object-fit-cover"
+                  style="width:100px; height:100px"
+                  alt="Current Product Image"
+                />
+                <img
+                  v-else
+                  src="@/assets/images/no-image.png"
+                  class="object-fit-cover"
+                  style="width:100px; height:100px"
+                  alt="No Image"
+                />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Hình ảnh mới</label>
+              <input
+                type="file"
+                class="form-control"
+                @change="imageChanged"
+                id="image"
+                accept="image/*"
+              />
+            </div>
+            <div class="mb-3">
+              <button class="btn btn-success form-control" type="submit">Lưu</button>
+            </div>
+          </form>
         </div>
-       
+      </div>
     </div>
-</template>
-<script>
-import NavBar from '@/components/NavBar.vue'
-import router from '@/router'
-import axios from 'axios'
-
-export default {
-    components:{
-         NavBar
-        },
-  data() {
-    return {
-      userName: '',
-      roleId :'',
-      url:'http://localhost/web_order_food/be_order_food/storage/app/public/items/',
-      productId:'',
-      item: '',
-      file:''
-
-    }
-  },
-    mounted(){
-        this.userName = localStorage.getItem('name')
-        this.roleId = localStorage.getItem('role_id')
-        if (!this.userName || this.userName == '' || this.userName ==null){
-        router.push({ name: 'login'})
-        }
-        if(this.roleId != 4) {
-        router.push({ name: 'home'})
-        }
+  </template>
+  
+  <script>
+  import NavBar from "@/components/NavBar.vue";
+  import router from "@/router";
+  import axios from "axios";
+  
+  export default {
+    components: {
+      NavBar,
     },
-    mounted(){
-        this.productId = this.$route.params.productId
-        this.userName = localStorage.getItem('name')
-        this.roleId = localStorage.getItem('role_id')
-        if (!this.userName || this.userName == '' || this.userName ==null){
-        router.push({ name: 'login'})
-        }
-        if(this.roleId != 4) {
-        router.push({ name: 'home'})
-        }
-        this.showItem()
+    data() {
+      return {
+        userName: "",
+        roleId: "",
+        url: "http://localhost/web_ban_hang/web_ban_hang_backend/storage/app/public/products/",
+        productId: "",
+        item: {
+          name: "",
+          price: "",
+          image: "",
+        },
+        file: null,
+      };
+    },
+    mounted() {
+      this.productId = this.$route.params.productId;
+      this.userName = localStorage.getItem("name");
+      this.roleId = localStorage.getItem("role_id");
+  
+      if (!this.userName || this.userName === "" || this.userName == null) {
+        router.push({ name: "login" });
+      }
+      if (this.roleId != 1) {
+        router.push({ name: "home" });
+      }
+  
+      this.showItem();
     },
     methods: {
-        showItem() {
-            axios.get('http://127.0.0.1:8000/api/item/' +this.productId, {
-               headers: {
-                "Authorization" : `Bearer ${localStorage.getItem('token')}`
-              }
-            })
-            .then((response) => {
-              this.item= response.data.data
-
-
-            })
-            .catch(function (error) {
-                console.log(error);
-                console.log('lỗi khi đăng nhập');
-            });
-        },
-        updateProduct(){
-            if(this.item.name ==''|| this.item.price == '') {
-                alert('vui long dien thong tin')
-                return;
-            }
-            let formData = new FormData();
-            formData.append('name', this.item.name)
-            formData.append('price', this.item.price)
-            formData.append('image_file', this.file)
-            formData.append('_method', 'patch')
-
-            axios.post('http://127.0.0.1:8000/api/item/'+this.productId, formData, {
-               headers: {
-                "Authorization" : `Bearer ${localStorage.getItem('token')}`,
-                // 'methods' : 'patch'
-              }
-            })
-            .then((response) => {
-                router.push({ name: 'product'})
-            })
-            .catch(function (error) {
-                if(error.response.status == 401){
-                    localStorage.removeItem('token')
-                    localStorage.removeItem('email')
-                    localStorage.removeItem('name')
-                    localStorage.removeItem('role_id')
-                    
-                    router.push({ name: 'login'})
-                }
-                console.log(error);
-                console.log('lỗi khi đăng nhập');
-            });
-            
-        },
-        imageChanged(e){
-        let file = e.target.files[0];
-        this.file = file
-   
+      showItem() {
+        axios
+          .get(`http://127.0.0.1:8000/api/product/${this.productId}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            this.item = response.data.data;
+          })
+          .catch((error) => {
+            console.error("Lỗi khi tải sản phẩm:", error);
+            alert("Không thể tải thông tin sản phẩm, vui lòng thử lại!");
+          });
+      },
+      updateProduct() {
+        if (this.item.name === "" || this.item.price === "") {
+          alert("Vui lòng điền đầy đủ thông tin");
+          return;
         }
-    }
-        
-}
-</script>
-<style lang="">
-    
-</style>
+  
+        let formData = new FormData();
+        formData.append("name", this.item.name);
+        formData.append("price", this.item.price);
+        if (this.file) {
+          formData.append("image_file", this.file);
+        }
+        formData.append("_method", "PATCH");
+  
+        axios
+          .post(`http://127.0.0.1:8000/api/products/${this.productId}`, formData, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(() => {
+            alert("Cập nhật sản phẩm thành công!");
+            router.push({ name: "product" });
+          })
+          .catch((error) => {
+            console.error("Lỗi khi cập nhật sản phẩm:", error);
+            alert("Không thể cập nhật sản phẩm, vui lòng thử lại!");
+          });
+      },
+      imageChanged(e) {
+        this.file = e.target.files[0];
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .form-label {
+    font-weight: bold;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+  
+  .object-fit-cover {
+    object-fit: cover;
+  }
+  </style>

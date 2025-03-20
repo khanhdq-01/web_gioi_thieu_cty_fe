@@ -1,165 +1,130 @@
 <template>
-
     <div>
-        <NavBar :name=userName :role="roleId" />
-        <div class="container mt-5">
-            <div class="table-response">
-                <table class="table table-responsive table-bordered">
-                    <tbody>
-                        <tr>
-                        <td>{{ order.customer_name }}</td>
-                        <td>{{ order.table_no }}</td>
-                        <td>{{ order.order_date }}</td>
-                        <td>{{ order.status }}</td>
-                    </tr>
-                    <tr>
-                        <td>waitress : {{ order.waitress ? order.waitress.name : '-' }} </td>
-                        <td>cashier :  {{ order.cashier ? order.cashier.name : '-' }} </td>
-                        <td>Order Time :  {{ order.order_time }}</td>
-                        <td>Grand Total :  {{ order.total }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <hr class="my-5">
-            <table class ="table table-striped">
-                <thead>
-                    <tr>
-                        <td>#</td>
-                        <td>Item Name</td>
-                        <td>Price</td>
-                        <td>Qty</td>
-                        <td>Total</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item,index) in order.order_detail" :key="index">
-                        <td>{{ index+1 }}</td>
-                        <td>{{ item.item ? item.item.name : '-' }}</td>
-                        <td>Rp {{ item.price }}</td>
-                        <td>{{ item.qty }}</td>
-                        <td>Rp {{ item.price * item.qty }}</td>
-
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- done if user is chef and order.status == ordered -->
-            <!-- done if user is cashier or manager and order.status == done -->
-             <div class="mt-3">
-                <button v-if="(order.status == 'ordered') && (roleId ==2)" class="btn btn-primary" @click="setAsDone(order.id)">Done</button>
-                <button v-if="(order.status == 'done') && (roleId == 3 ||roleId==4)" class="btn btn-primary" @click="setAsPaid(order.id)">Paid</button>
-
-             </div>
-
+      <NavBar :name="userName" :role="roleId" />
+      <div class="container mt-5">
+        <div class="row">
+          <!-- Product Image -->
+          <div class="col-md-6">
+            <img
+              :src="url + product.image"
+              alt="Product Image"
+              class="img-fluid rounded"
+            />
+          </div>
+  
+          <!-- Product Details -->
+          <div class="col-md-6">
+            <h1 class="product-title">{{ product.name }}</h1>
+            <p class="product-price text-warning">Price: {{ product.price }} vnđ</p>
+            <p class="product-description">{{ product.description }}</p>
+            <p class="product-stock">
+              <strong>Stock:</strong> {{ product.stock }}
+            </p>
+  
+            <!-- Add to Cart Button -->
+            <button
+              class="btn btn-primary btn-lg mt-3"
+              :disabled="product.stock === 0"
+              @click="addToCart(product)"
+            >
+              Add to Cart
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</template>
-
-<script>
-import NavBar from '@/components/NavBar.vue'
-import router from '@/router'
-import axios from 'axios'
-
-export default {
-    components:{
-         NavBar
-        },
-    data() {
-        return {
-        userName: '',
-        roleId :'',
-        order:''
-        }
+  </template>
+  
+  <script>
+  import NavBar from "@/components/NavBar.vue";
+  import axios from "axios";
+  import router from "@/router";
+  
+  export default {
+    components: {
+      NavBar,
     },
-    mounted(){
-        this.userName = localStorage.getItem('name')
-        this.roleId = localStorage.getItem('role_id')
-
-        if (!this.userName || this.userName == '' || this.userName ==null){
-        router.push({ name: 'login'})
-        }
-        this.getOrder()
+    data() {
+      return {
+        userName: "",
+        roleId: "",
+        product: {}, // Thông tin chi tiết sản phẩm
+        url: "http://localhost/web_ban_hang/web_ban_hang_backend/storage/app/public/products/",
+      };
+    },
+    mounted() {
+      this.userName = localStorage.getItem("name");
+      this.roleId = localStorage.getItem("role_id");
+  
+      if (!this.userName || this.userName === "" || this.userName == null) {
+        router.push({ name: "login" });
+      }
+      this.getProduct();
     },
     methods: {
-        
-        getOrder() {
-            axios.get('http://127.0.0.1:8000/api/order/' +this.$route.params.orderId, {
-               headers: {
-                "Authorization" : `Bearer ${localStorage.getItem('token')}`,
-              }
-            })
-            .then((response) => {
-                // console.log(response.data)
-                this.order = response.data.data
-            })
-            .catch(function (error) {
-                if(error.response.status == 401){
-                    localStorage.removeItem('token')
-                    localStorage.removeItem('email')
-                    localStorage.removeItem('name')
-                    localStorage.removeItem('role_id')
-                    
-                    router.push({ name: 'login'})
-                }
-                console.log(error);
-                console.log('lỗi khi đăng nhập');
-            });
-        },
-        setAsDone(orderId) {
-            axios.get('http://127.0.0.1:8000/api/order/' + orderId + '/set-as-done' , {
-               headers: {
-                "Authorization" : `Bearer ${localStorage.getItem('token')}`,
-              }
-            })
-            .then((response) => {
-                if(response.status == 200){
-                    alert('thay đổi trạng thái đơn hàng thành thực hiện thành công')
-                }
-                this.order = response.data.data
-            })
-            .catch(function (error) {
-                if(error.response.status == 401){
-                    localStorage.removeItem('token')
-                    localStorage.removeItem('email')
-                    localStorage.removeItem('name')
-                    localStorage.removeItem('role_id')
-                    
-                    router.push({ name: 'login'})
-                }
-                console.log(error);
-                console.log('lỗi khi đăng nhập');
-            });
-        },
-        setAsPaid(orderId) {
-            axios.get('http://127.0.0.1:8000/api/order/' + orderId + '/payment' , {
-               headers: {
-                "Authorization" : `Bearer ${localStorage.getItem('token')}`,
-              }
-            })
-            .then((response) => {
-                if(response.status == 200){
-                    alert('thay đổi đơn đặt hàng đã thanh toán thành thực hiện thành công')
-                }
-                this.order = response.data.data
-            })
-            .catch(function (error) {
-                if(error.response.status == 401){
-                    localStorage.removeItem('token')
-                    localStorage.removeItem('email')
-                    localStorage.removeItem('name')
-                    localStorage.removeItem('role_id')
-                    
-                    router.push({ name: 'login'})
-                }
-                console.log(error);
-                console.log('lỗi khi đăng nhập');
-            });
+      // Lấy thông tin chi tiết sản phẩm từ API
+      getProduct() {
+        axios
+          .get(`http://127.0.0.1:8000/api/product/${this.$route.params.productId}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            this.product = response.data.data;
+          })
+          .catch((error) => {
+            if (error.response && error.response.status === 401) {
+              localStorage.removeItem("token");
+              localStorage.removeItem("email");
+              localStorage.removeItem("name");
+              localStorage.removeItem("role_id");
+              router.push({ name: "login" });
+            }
+            console.error(error);
+          });
+      },
+  
+      // Thêm sản phẩm vào giỏ hàng
+      addToCart(product) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingProduct = cart.find((item) => item.id === product.id);
+  
+        if (existingProduct) {
+          existingProduct.quantity++;
+        } else {
+          cart.push({ ...product, quantity: 1 });
         }
-            
-    }
-}
-</script>
-<style lang="">
-    
-</style>
+  
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert(`${product.name} has been added to the cart.`);
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .product-title {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .product-price {
+    font-size: 1.5rem;
+  }
+  
+  .product-description {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+  }
+  
+  .product-stock {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .img-fluid {
+    max-height: 400px;
+    object-fit: cover;
+  }
+  </style>

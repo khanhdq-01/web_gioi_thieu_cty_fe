@@ -26,7 +26,7 @@
                 <i class="fas fa-home"></i> Home
               </RouterLink>
             </li>
-            <li v-if="role == 4 || role == 1" class="nav-item">
+            <li v-if="role == 3 || role == 1" class="nav-item">
               <RouterLink class="nav-link" to="/order">
                 <i class="fas fa-shopping-cart"></i> Order
               </RouterLink>
@@ -36,12 +36,12 @@
                 <i class="fas fa-list"></i> Order List
               </RouterLink>
             </li>
-            <li v-if="role == 4" class="nav-item">
+            <li v-if="role == 1" class="nav-item">
               <RouterLink class="nav-link" to="/order-report">
                 <i class="fas fa-chart-line"></i> Order Report
               </RouterLink>
             </li>
-            <li v-if="role == 4" class="nav-item">
+            <li v-if="role == 1" class="nav-item">
               <RouterLink class="nav-link" to="/product">
                 <i class="fas fa-box"></i> Product
               </RouterLink>
