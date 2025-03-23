@@ -205,7 +205,7 @@ export default {
   },
   methods: {
     getItems() {
-      axios.get('http://127.0.0.1:8000/api/item', {
+      axios.get('http://127.0.0.1:8000/api/product', {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`
         }

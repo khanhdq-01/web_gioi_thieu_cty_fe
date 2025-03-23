@@ -31,6 +31,11 @@
                 <i class="fas fa-shopping-cart"></i> Order
               </RouterLink>
             </li>
+            <li v-if="role == 3 || role == 1" class="nav-item">
+              <RouterLink class="nav-link" to="/cart">
+                <i class="fas fa-shopping-cart"></i> Giỏ hàng
+              </RouterLink>
+            </li>
             <li class="nav-item">
               <RouterLink class="nav-link" to="/order-list">
                 <i class="fas fa-list"></i> Order List

@@ -91,6 +91,9 @@ export default {
     return {
       userName: "",
       roleId: "",
+      day: "",
+      month: "",
+      year: "",
       months: [
         { value: 1, name: "Tháng 1" },
         { value: 2, name: "Tháng 2" },
@@ -105,11 +108,7 @@ export default {
         { value: 11, name: "Tháng 11" },
         { value: 12, name: "Tháng 12" },
       ],
-      month: "",
       data: {
-        orderCount: 0,
-        minPayment: 0,
-        maxPayment: 0,
         orders: [],
       },
       currentPage: 1,
@@ -118,15 +117,9 @@ export default {
   },
   computed: {
     totalPages() {
-      if (!Array.isArray(this.data.orders)) {
-        return 0; // Trả về 0 nếu không phải là mảng
-      }
       return Math.ceil(this.data.orders.length / this.itemsPerPage);
     },
     paginatedOrders() {
-      if (!Array.isArray(this.data.orders)) {
-        return [];
-      }
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
       return this.data.orders.slice(start, end);
@@ -142,32 +135,26 @@ export default {
   },
   methods: {
     getReport() {
-      if (!this.month) {
-        alert("Vui lòng chọn tháng để xem báo cáo!");
-        return;
-      }
+      const params = [];
+      if (this.day) params.push(`day=${this.day}`);
+      if (this.month) params.push(`month=${this.month}`);
+      if (this.year) params.push(`year=${this.year}`);
+      const queryString = params.join("&");
 
       axios
-        .get(`http://127.0.0.1:8000/api/order-report?month=${this.month}`, {
+        .get(`http://127.0.0.1:8000/api/order-report?${queryString}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
         .then((response) => {
           if (response.data && response.data.data) {
-            this.data = response.data.data;
+            this.data.orders = response.data.data;
           } else {
             this.data.orders = [];
           }
         })
         .catch((error) => {
-          if (error.response && error.response.status === 401) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("email");
-            localStorage.removeItem("name");
-            localStorage.removeItem("role_id");
-            router.push({ name: "login" });
-          }
           console.error("Lỗi khi tải báo cáo:", error);
           alert("Không thể tải báo cáo, vui lòng thử lại!");
         });
