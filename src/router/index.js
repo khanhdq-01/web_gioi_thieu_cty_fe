@@ -1,14 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
-import OrderView from '../views/OrderView.vue'
-import ProductView from '../views/ProductView.vue'
-import ProductUpdateView from '../views/ProductUpdateView.vue'
-import OrderListView from '../views/OrderListView.vue'
-import ProductAddView from '../views/ProductAddView.vue'
-import OrderDetailView from '../views/OrderDetailView.vue'
-import OrderReportView from '../views/OrderReportView.vue'
-import CartView from '../views/CartView.vue'
+import ArticleDetailView from '../views/ArticleDetailView.vue'
+import ArticleView from '../views/ArticleView.vue'
+import ArticleUpdateView from '../views/ArticleUpdateView.vue'
+import ArticleAddView from '../views/ArticleAddView.vue'
+import ArticleListView from '../views/ArticleListView.vue'
+import UserInforView from '../views/UserInforView.vue'
+import CompanyProfileView from '../views/CompanyProfileView.vue'
+import AchievementsView from '../views/AchievementsView.vue'
+import RecruitmentView from '../views/RecruitmentView.vue'
 
 
 const router = createRouter({
@@ -25,45 +26,51 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: '/order',
-      name: 'order',
-      component: OrderView,
+      path: '/article/:articleId',
+      name: 'articleDetail',
+      component: ArticleDetailView,
     },
     {
-      path: '/order-list',
-      name: 'orderList',
-      component: OrderListView,
+      path: '/article',
+      name: 'article',
+      component: ArticleView,
     },
     {
-      path: '/order/:orderId',
-      name: 'orderDetail',
-      component: OrderDetailView,
+      path: '/article/:articleId',
+      name: 'articleUpdate',
+      component: ArticleUpdateView,
     },
     {
-      path: '/order-report',
-      name: 'orderReport',
-      component: OrderReportView,
+      path: '/article-add',
+      name: 'articleAdd',
+      component: ArticleAddView,
     },
     {
-      path: '/product',
-      name: 'product',
-      component: ProductView,
+      path: '/article-list',
+      name: 'articleList',
+      component: ArticleListView,
     },
     {
-      path: '/product/:productId',
-      name: 'productUpdate',
-      component: ProductUpdateView,
+      path: '/company-profile',
+      name: 'companyProfile',
+      component: CompanyProfileView,
     },
     {
-      path: '/product-add',
-      name: 'productAdd',
-      component: ProductAddView,
+      path: '/user-infor',
+      name: 'userInfor',
+      component: UserInforView,
+      meta: { requiresAuth: true }
     },
     {
-      path: '/cart',
-      name: 'cart',
-      component: CartView,
-    }
+      path: '/achievements',
+      name: 'achievements',
+      component: AchievementsView,
+    },
+    {
+      path: '/recruitment',
+      name: 'recruitment',
+      component: RecruitmentView,
+    },
   ],
 })
 

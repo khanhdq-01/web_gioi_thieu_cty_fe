@@ -2,36 +2,94 @@
   <div>
     <NavBar :name="userName" :role="roleId" />
 
-<!-- About Us Section -->
-      <section class="about-us">
-        <div class="container">
-          <div class="about-content">
-            <h2>Welcome to Our Company</h2>
-            <p>
-              We are committed to delivering high-quality products and services to our customers. 
-              With years of experience in the industry, we strive to innovate and provide the best solutions 
-              tailored to your needs.
-            </p>
-            <p>
-              Our team consists of passionate professionals dedicated to excellence and customer satisfaction. 
-              We believe in transparency, integrity, and continuous improvement.
-            </p>
+    <!-- Hero Section -->
+    <section class="hero d-flex align-items-center justify-content-center text-center">
+  <div class="hero-content">
+    <h1 class="hero-title">Empowering Your Business</h1>
+    <p class="hero-subtitle">Providing cutting-edge technology solutions</p>
+    <RouterLink to="/article">
+      <button class="btn btn-warning mt-3 btn-lg shadow-lg">Explore Our Projects</button>
+    </RouterLink>
+  </div>
+</section>
+<section class="services py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-5">Our Services</h2>
+    <div class="row">
+      <div class="col-md-4" v-for="(service, index) in services" :key="index">
+        <div class="card service-card text-center p-4">
+          <div class="card-body">
+            <i :class="service.icon + ' service-icon'"></i>
+            <h5 class="card-title mt-3">{{ service.title }}</h5>
+            <p class="card-text">{{ service.description }}</p>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
 
 
-<!-- Best Selling Products Section -->
-    <section class="best-selling-products text-center my-5">
-      <h2 class="mb-4">Best Selling Products</h2>
+    <!-- About Us Section -->
+    <section class="about-us py-5">
       <div class="container">
-        <div class="row justify-content-center">
-          <div v-for="(product, index) in bestSellingProducts" :key="index" class="col-md-4 mb-4">
-            <div class="card">
-              <img :src="product.image ? url + product.image : require('@/assets/images/no-image.png')" class="card-img-top" alt="Product Image">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <img src="@/assets/images/no-image.png" alt="Placeholder Image" />
+          </div>
+          <div class="col-md-6">
+            <h2 class="about-title">About Us</h2>
+            <p class="about-text">
+              We are a leading company in the industry, dedicated to providing innovative solutions and exceptional
+              services to our clients. With years of experience and a team of passionate professionals, we strive to
+              deliver excellence in every project we undertake.
+            </p>
+            <p class="about-text">
+              Our mission is to empower businesses with cutting-edge technology and creative strategies that drive growth
+              and success. We believe in building long-term relationships with our clients based on trust, transparency,
+              and mutual respect.
+            </p>
+            <button class="btn btn-primary">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services py-5 bg-light">
+      <div class="container">
+        <h2 class="text-center mb-5">Our Services</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card service-card">
               <div class="card-body">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text text-warning">${{ product.price }}</p>
+                <i class="fas fa-laptop-code service-icon"></i>
+                <h5 class="card-title">Web Development</h5>
+                <p class="card-text">
+                  We create responsive and user-friendly websites tailored to your business needs.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card service-card">
+              <div class="card-body">
+                <i class="fas fa-mobile-alt service-icon"></i>
+                <h5 class="card-title">Mobile Apps</h5>
+                <p class="card-text">
+                  Develop high-performance mobile applications for iOS and Android platforms.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card service-card">
+              <div class="card-body">
+                <i class="fas fa-chart-line service-icon"></i>
+                <h5 class="card-title">Digital Marketing</h5>
+                <p class="card-text">
+                  Boost your online presence with our effective digital marketing strategies.
+                </p>
               </div>
             </div>
           </div>
@@ -39,314 +97,330 @@
       </div>
     </section>
 
-
-    <!-- Hero Section -->
-    <section class="hero d-flex align-items-center justify-content-center text-center">
-      <div class="hero-content">
-        <h1 class="hero-title">Welcome to Our Restaurant</h1>
-        <p class="hero-subtitle">Experience the best cuisine with a touch of elegance</p>
-        <RouterLink to="/order">
-          <button class="btn btn-warning mt-3 btn-lg">Book a Table</button>
-        </RouterLink>
+    <!-- Team Section -->
+    <section class="team py-5">
+      <div class="container">
+        <h2 class="text-center mb-5">Our Team</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card team-card">
+              <img src="@/assets/images/no-image.png" alt="Placeholder Image" />
+              <div class="card-body">
+                <h5 class="card-title">John Doe</h5>
+                <p class="card-text">CEO & Founder</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card team-card">
+              <img src="@/assets/images/no-image.png" alt="Placeholder Image" />
+              <div class="card-body">
+                <h5 class="card-title">Jane Smith</h5>
+                <p class="card-text">CTO</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card team-card">
+              <img src="@/assets/images/no-image.png" alt="Placeholder Image" />
+              <div class="card-body">
+                <h5 class="card-title">Mike Johnson</h5>
+                <p class="card-text">Lead Developer</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Contact Section -->
-    <footer class="text-center text-lg-start bg-body-tertiary text-muted">
-      <!-- Section: Social media -->
-      <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-        <!-- Left -->
-        <div class="me-5 d-none d-lg-block">
-          <span>Get connected with us on social networks:</span>
-        </div>
-        <!-- Left -->
-
-        <!-- Right -->
-        <div>
-          <a href="" class="me-4 text-reset">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="" class="me-4 text-reset">
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a href="" class="me-4 text-reset">
-            <i class="fab fa-google"></i>
-          </a>
-          <a href="" class="me-4 text-reset">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="" class="me-4 text-reset">
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="" class="me-4 text-reset">
-            <i class="fab fa-github"></i>
-          </a>
-        </div>
-        <!-- Right -->
-      </section>
-      <!-- Section: Social media -->
-
-      <!-- Section: Links  -->
-      <section class="">
-        <div class="container text-center text-md-start mt-5">
-          <!-- Grid row -->
-          <div class="row mt-3">
-            <!-- Grid column -->
-            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-              <!-- Content -->
-              <h6 class="text-uppercase fw-bold mb-4">
-                <i class="fas fa-gem me-3"></i>Company name
-              </h6>
-              <p>
-                Here you can use rows and columns to organize your footer content. Lorem ipsum
-                dolor sit amet, consectetur adipisicing elit.
-              </p>
-            </div>
-            <!-- Grid column -->
-
-            <!-- Grid column -->
-            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-              <!-- Links -->
-              <h6 class="text-uppercase fw-bold mb-4">
-                Products
-              </h6>
-              <p>
-                <a href="#!" class="text-reset">Angular</a>
-              </p>
-              <p>
-                <a href="#!" class="text-reset">React</a>
-              </p>
-              <p>
-                <a href="#!" class="text-reset">Vue</a>
-              </p>
-              <p>
-                <a href="#!" class="text-reset">Laravel</a>
-              </p>
-            </div>
-            <!-- Grid column -->
-
-            <!-- Grid column -->
-            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-              <!-- Links -->
-              <h6 class="text-uppercase fw-bold mb-4">
-                Useful links
-              </h6>
-              <p>
-                <a href="#!" class="text-reset">Pricing</a>
-              </p>
-              <p>
-                <a href="#!" class="text-reset">Settings</a>
-              </p>
-              <p>
-                <a href="#!" class="text-reset">Orders</a>
-              </p>
-              <p>
-                <a href="#!" class="text-reset">Help</a>
-              </p>
-            </div>
-            <!-- Grid column -->
-
-            <!-- Grid column -->
-            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-              <!-- Links -->
-              <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-              <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
-              <p>
-                <i class="fas fa-envelope me-3"></i>
-                info@example.com
-              </p>
-              <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
-              <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
-            </div>
-            <!-- Grid column -->
+    <section class="contact py-5 bg-light">
+      <div class="container">
+        <h2 class="text-center mb-5">Contact Us</h2>
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+            <form @submit.prevent="submitForm">
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Your Name" v-model="formData.name" required />
+              </div>
+              <div class="mb-3">
+                <input type="email" class="form-control" placeholder="Your Email" v-model="formData.email" required />
+              </div>
+              <div class="mb-3">
+                <input type="tel" class="form-control" placeholder="Your Phone" v-model="formData.phone" required />
+              </div>
+              <div class="mb-3">
+                <textarea class="form-control" rows="5" placeholder="Your Message" v-model="formData.message" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+            <p v-if="successMessage" class="text-success mt-3">{{ successMessage }}</p>
+            <p v-if="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
           </div>
-          <!-- Grid row -->
         </div>
-      </section>
-      <!-- Section: Links  -->
-
-      <!-- Copyright -->
-      <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        © 2021 Copyright:
-        <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
       </div>
-      <!-- Copyright -->
+    </section>
+
+    <section class="user-infos py-5">
+      <div class="container">
+        <h2 class="text-center mb-5">Giới thiệu công ty</h2>
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>title</th>
+                  <th>content</th>
+                  <th>image</th>
+                  <th>Xóa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="company in companyProfile" :key="company.id">
+                  <td>{{ company.title }}</td>
+                  <td>{{ company.content }}</td>
+                  <td><img :src="company.image" alt="Company image" style="max-width: 100px;"></td>
+                  <td> 
+                    <button @click="deleteCompanyProfile(company.id)" class="btn btn-danger btn-sm">
+                        Xóa
+                    </button>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+ <!-- add dữ liệu công ty Section -->
+    <!-- Footer -->
+    <footer class="text-center text-lg-start bg-dark text-white">
+      <div class="container p-4">
+        <div class="row">
+          <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Our Company</h5>
+            <p>
+              We are dedicated to delivering innovative solutions and exceptional services to our clients. Join us on
+              this journey of growth and success.
+            </p>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Quick Links</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#!" class="text-white">Home</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">About Us</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Services</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Contact</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Contact</h5>
+            <ul class="list-unstyled">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> 123 Main Street, New York, NY 10012
+              </li>
+              <li>
+                <i class="fas fa-phone"></i> +1 234 567 890
+              </li>
+              <li>
+                <i class="fas fa-envelope"></i> info@example.com
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2023 Copyright:
+        <a class="text-white" href="#">YourCompany.com</a>
+      </div>
     </footer>
   </div>
 </template>
-
 <script>
-import NavBar from '@/components/NavBar.vue'
-import router from '@/router'
-import axios from 'axios'
+import NavBar from '@/components/NavBar.vue';
+import axios from 'axios';
 
 export default {
   components: { NavBar },
   data() {
     return {
       userName: '',
+      services: [
+        { title: "Web Development", description: "Modern and responsive web applications.", icon: "fas fa-laptop-code" },
+        { title: "Mobile Apps", description: "Build native & cross-platform apps.", icon: "fas fa-mobile-alt" },
+        { title: "Digital Marketing", description: "Grow your online presence.", icon: "fas fa-chart-line" }
+      ],
       roleId: '',
-      items: [],
-      bestSellingProducts: [],
-      url: 'http://localhost/web_ban_hang/web_ban_hang_backend/storage/app/public/items/'
-    }
+      formData: {
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+      },
+      companyProfile: [],
+      successMessage: '',
+      errorMessage: '',
+    };
   },
   mounted() {
     this.userName = localStorage.getItem('name');
     this.roleId = localStorage.getItem('role_id');
     if (!this.userName || this.userName === '' || this.userName == null) {
-      router.push({ name: 'login' });
+      this.$router.push({ name: 'login' });
     }
     if (this.roleId != 1) {
-      router.push({ name: 'home' });
+      this.$router.push({ name: 'home' });
     }
-    this.getItems();
-    this.fetchBestSellingProducts();
+    this.fetchCompanyProfile();
   },
   methods: {
-    getItems() {
-      axios.get('http://127.0.0.1:8000/api/product', {
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-      .then((response) => {
-        this.items = response.data.data;
-      })
-      .catch((error) => {
-        if (error.response.status === 401) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('email');
-          localStorage.removeItem('name');
-          localStorage.removeItem('role_id');
-          router.push({ name: 'login' });
-        }
-        console.error(error);
-        console.log('Lỗi khi đăng nhập');
-      });
+    async submitForm() {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/user-info', this.formData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        this.successMessage = response.data.message;
+        this.errorMessage = '';
+        this.formData = { name: '', email: '', phone: '', message: '' }; // Reset form
+      } catch (error) {
+        this.errorMessage = error.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại.';
+        this.successMessage = '';
+      }
     },
-    fetchBestSellingProducts() {
-      axios.get('http://127.0.0.1:8000/api/top-dishes', {
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-      .then((response) => {
-        this.bestSellingProducts = response.data.data;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    async fetchCompanyProfile() {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/company-profile', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    console.log("Full API response:", response); // Kiểm tra toàn bộ phản hồi
+    console.log("Response data:", response.data); // Kiểm tra cấu trúc data
+    
+    // Thay đổi logic kiểm tra phản hồi
+    if (response.data && Array.isArray(response.data)) {
+      this.companyProfile = response.data; // Nếu API trả về trực tiếp mảng
+    } else if (response.data && response.data.data) {
+      this.companyProfile = response.data.data; // Nếu API trả về qua trường data
+    } else {
+      throw new Error("Invalid response format");
     }
+  } catch (error) {
+    console.error('Error fetching company profiles:', error);
+    alert("Không thể tải dữ liệu. Vui lòng thử lại!");
+  }
+},
+
+async deleteCompanyProfile(id) {
+  if (!confirm("Bạn chắc chắn muốn xóa?")) return;
+  
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+    
+    await axios.delete(`http://127.0.0.1:8000/api/company-profile/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    
+    this.companyProfile = this.companyProfile.filter(company => company.id !== id);
+    alert("Xóa thành công!");
+  } catch (error) {
+    console.error("Error deleting company profile:", error);
+    alert(`Xóa thất bại! ${error.message}`);
   }
 }
+  },
+};
 </script>
-
 <style scoped>
-.best-selling-products {
-  width: 62%; /* Chiếm 2/3 màn hình */
-  max-width: 900px; /* Giới hạn tối đa */
-  margin: 0 auto; /* Căn giữa */
-}
-
-.card {
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-}
-
-.card:hover {
-  transform: scale(1.05);
-}
-
-.card-img-top {
-  height: 200px;
-  object-fit: cover;
-}
-
-.card-body {
-  background: #fff;
-  padding: 20px;
-}
-
-h2 {
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.carousel-container {
-  height: 50vh;
-  overflow: hidden;
-}
-
-.carousel-img {
-  height: 100%;
-  object-fit: cover;
-}
-
+/* Hero section */
 .hero {
-  height: 50vh;
-  background: url('@/assets/images/hero-background.jpg') no-repeat center center;
-  background-size: cover;
-  color: rgb(62, 55, 55);
-  padding: 20px;
-}
-
-.hero {
-  height: 30vh; /* Giảm chiều cao của phần hero */
-  background: url('@/assets/images/hero-background.jpg') no-repeat center center;
-  background-size: cover;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
+              url('@/assets/images/hero-bg.jpg') center/cover no-repeat;
   color: white;
-  padding: 20px;
-}
-
-.hero-content {
-  background: rgba(0, 0, 0, 0.5); /* Làm nền của nội dung hero tối hơn */
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.hero-title {
-  font-size: 2.5rem; /* Giảm kích thước phông chữ của tiêu đề */
-  font-weight: bold;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem; /* Giảm kích thước phông chữ của phụ đề */
-  margin-bottom: 20px;
-}
-
-.best-selling-products .card {
-  height: 100%;
-}
-
-.best-selling-products .card-img-top {
-  height: 200px;
-  object-fit: cover;
-}
-
-.about-us {
-  background: #f8f9fa;
-  padding: 60px 20px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
-.about-content {
-  max-width: 800px;
-  margin: 0 auto;
+.hero-title {
+  font-size: 3rem;
+  font-weight: bold;
+  animation: fadeIn 1.5s ease-in-out;
 }
 
-.about-content h2 {
-  font-size: 28px;
-  color: #2c3e50;
-  margin-bottom: 15px;
+.hero-subtitle {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  opacity: 0.9;
 }
 
-.about-content p {
-  font-size: 16px;
-  color: #555;
+/* About section */
+.about-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.about-text {
+  font-size: 1.1rem;
   line-height: 1.6;
+  color: #555;
+}
+
+/* Button Custom */
+.btn-warning {
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-warning:hover {
+  background-color: #ff8800;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Service Section */
+.service-card {
+  border: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+}
+
+.service-icon {
+  font-size: 3rem;
+  color: #007bff;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 </style>

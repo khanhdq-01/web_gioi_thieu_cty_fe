@@ -1,4 +1,4 @@
-# front-end-web-order-food
+# front-end-web
 
 This template should help get you started developing with Vue 3 in Vite.
 

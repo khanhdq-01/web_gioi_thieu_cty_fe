@@ -3,32 +3,21 @@
     <NavBar :name="userName" :role="roleId" />
     <div class="container mt-5">
       <div class="row">
-        <!-- Product Image -->
+        <!-- Article Image -->
         <div class="col-md-6">
           <img
-            :src="url + product.image"
-            alt="Product Image"
+            :src="url + article.image"
+            alt="Article Image"
             class="img-fluid rounded"
           />
         </div>
 
-        <!-- Product Details -->
+        <!-- Article Details -->
         <div class="col-md-6">
-          <h1 class="product-title">{{ product.name }}</h1>
-          <p class="product-price text-warning">Giá: {{ product.price }} vnđ</p>
-          <p class="product-description">{{ product.description }}</p>
-          <p class="product-stock">
-            <strong>Tồn kho:</strong> {{ product.stock }}
-          </p>
+          <h1 class="article-title">{{ article.name }}</h1>
+          <p class="article-description">{{ article.description }}</p>
 
           <!-- Add to Cart Button -->
-<!-- Sửa nút Thêm vào giỏ hàng -->
-        <button
-          class="btn btn-primary btn-lg mt-3"
-          @click="addToCartAndRedirect(product)"
-        >
-          Thêm vào giỏ hàng
-        </button>
         </div>
       </div>
     </div>
@@ -48,8 +37,8 @@ export default {
     return {
       userName: "",
       roleId: "",
-      product: {}, // Thông tin chi tiết sản phẩm
-      url: "http://localhost/web_ban_hang/web_ban_hang_backend/storage/app/public/items/", // Đường dẫn hình ảnh
+      article: {}, // Thông tin chi tiết sản phẩm
+      url: "http://localhost/web_gioi_thieu_cty/company_web_laravel/storage/app/public/items", // Đường dẫn hình ảnh
     };
   },
   mounted() {
@@ -59,19 +48,19 @@ export default {
     if (!this.userName || this.userName === "" || this.userName == null) {
       router.push({ name: "login" });
     }
-    this.getProduct();
+    this.getArticle();
   },
   methods: {
     // Lấy thông tin chi tiết sản phẩm từ API
-    getProduct() {
+    getArticle() {
       axios
-        .get(`http://127.0.0.1:8000/api/product/${this.$route.params.orderId}`, {
+        .get(`http://127.0.0.1:8000/api/article/${this.$route.params.articleId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
         .then((response) => {
-          this.product = response.data.data;
+          this.article = response.data.data;
         })
         .catch((error) => {
           if (error.response && error.response.status === 401) {
@@ -86,7 +75,7 @@ export default {
     },
 
     // Thêm sản phẩm vào giỏ hàng
-    addToCartAndRedirect(product) {
+    addToCartAndRedirect(article) {
   const token = localStorage.getItem("token");
   if (!token) {
     alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
@@ -94,9 +83,9 @@ export default {
     return;
   }
 
-  // Kiểm tra nếu product không tồn tại hoặc không có id
-  if (!product || !product.id) {
-    alert("Không thể thêm sản phẩm vào giỏ hàng. Dữ liệu sản phẩm không hợp lệ.");
+  // Kiểm tra nếu article không tồn tại hoặc không có id
+  if (!article || !article.id) {
+    alert("Bài viết. Dữ liệu sản phẩm không hợp lệ.");
     return;
   }
 
@@ -104,7 +93,7 @@ export default {
     .post(
       "http://127.0.0.1:8000/api/cart", // API thêm sản phẩm vào giỏ hàng
       {
-        product_id: product.id,
+        article_id: article.id,
         quantity: 1,
       },
       {
@@ -114,7 +103,7 @@ export default {
       }
     )
     .then(() => {
-      alert(`${product.name} đã được thêm vào giỏ hàng.`);
+      alert(`${article.name} đã được thêm vào giỏ hàng.`);
       router.push({ name: "cart" }); // Chuyển hướng đến trang giỏ hàng
     })
     .catch((error) => {
@@ -132,21 +121,21 @@ export default {
 </script>
 
 <style scoped>
-.product-title {
+.article-title {
   font-size: 2rem;
   font-weight: bold;
 }
 
-.product-price {
+.article-price {
   font-size: 1.5rem;
 }
 
-.product-description {
+.article-description {
   font-size: 1.2rem;
   margin-top: 1rem;
 }
 
-.product-stock {
+.article-stock {
   font-size: 1rem;
   margin-top: 1rem;
 }

@@ -9,47 +9,46 @@
             type="text"
             v-model="keyword"
             class="form-control search-bar"
-            placeholder="🔍 Tìm kiếm sản phẩm..."
+            placeholder="🔍 Tìm kiếm bài viết"
             @input="searchItem()"
           />
         </div>
 
-        <!-- Product List -->
+        <!-- Article List -->
         <div class="col-12">
           <div v-if="paginatedItems.length > 0" class="row">
             <div
               v-for="item in paginatedItems"
               :key="item.id"
-              class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+              class="col-12 mb-4"
             >
-              <div class="card product-card">
-                <img
-                  class="card-img-top"
-                  :src="url + item.image"
-                  alt="Product Image"
-                />
-                <div class="card-body text-center">
-                  <h5 class="card-title">{{ item.name }}</h5>
-                  <p class="card-text text-danger fw-bold">{{ item.price }} VNĐ</p>
-
-                  <!-- Button Group -->
-                  <div class="button-group mt-2">
-                    <button class="btn btn-primary btn-sm" @click="addToCartAndRedirect(item)">
-                      🛒 Thêm vào giỏ hàng
-                    </button>
-                    <RouterLink
-                      :to="{ name: 'orderDetail', params: { orderId: item.id } }"
-                      class="btn btn-info btn-sm"
-                    >
-                      📜 Xem chi tiết
-                    </RouterLink>
+              <div class="card article-card">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img
+                      class="img-fluid rounded-start"
+                      :src="url + item.image"
+                      alt="Article Image"
+                    />
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ item.name }}</h5>
+                      <p class="card-text">{{ item.description }}</p>
+                      <RouterLink
+                        :to="{ name: 'articleDetail', params: { articleId: item.id } }"
+                        class="btn btn-primary"
+                      >
+                        📜 Xem chi tiết
+                      </RouterLink>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div v-else class="text-center mt-5">
-            <p>😞 Không tìm thấy sản phẩm nào.</p>
+            <p>😞 Không tìm thấy bài viết nào.</p>
           </div>
 
           <!-- Pagination Controls -->
@@ -84,9 +83,9 @@ export default {
       items: [],
       keyword: "",
       filteredItems: [],
-      url: "http://localhost/web_ban_hang/web_ban_hang_backend/storage/app/public/items/",
+      url: "http://localhost/web_gioi_thieu_cty/company_web_laravel/storage/app/public/items",
       currentPage: 1,
-      itemsPerPage: 12,
+      itemsPerPage: 5, // Giảm số lượng bài viết mỗi trang để phù hợp với layout mới
     };
   },
   computed: {
@@ -110,7 +109,7 @@ export default {
   methods: {
     getItems() {
       axios
-        .get("http://127.0.0.1:8000/api/product", {
+        .get("http://127.0.0.1:8000/api/article", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -133,29 +132,6 @@ export default {
       );
       this.currentPage = 1;
     },
-    addToCartAndRedirect(item) {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
-        router.push({ name: "login" });
-        return;
-      }
-
-      axios
-        .post(
-          "http://127.0.0.1:8000/api/cart",
-          { product_id: item.id, quantity: 1 },
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-        .then(() => {
-          alert(`${item.name} đã được thêm vào giỏ hàng.`);
-          router.push({ name: "cart" });
-        })
-        .catch((error) => {
-          console.error(error);
-          alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
-        });
-    },
     prevPage() {
       if (this.currentPage > 1) this.currentPage--;
     },
@@ -175,16 +151,17 @@ export default {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Product Card */
-.product-card {
+/* Article Card */
+.article-card {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin-bottom: 20px;
 }
 
-.product-card:hover {
-  transform: scale(1.05);
+.article-card:hover {
+  transform: scale(1.02);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -195,19 +172,19 @@ export default {
 
 .card-body {
   background: #fff;
-  padding: 15px;
+  padding: 20px;
 }
 
-/* Button Group */
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  gap: 10px;
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
-.button-group .btn {
-  flex: 1;
+.card-text {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
 }
 
 /* Buttons */
@@ -220,16 +197,6 @@ export default {
 .btn-primary:hover {
   background-color: #0056b3;
   border-color: #004085;
-}
-
-.btn-info {
-  background-color: #17a2b8;
-  border-color: #17a2b8;
-}
-
-.btn-info:hover {
-  background-color: #117a8b;
-  border-color: #0f6674;
 }
 
 /* Pagination */

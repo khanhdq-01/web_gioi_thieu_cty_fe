@@ -5,7 +5,7 @@
       <h2 class="my-5 text-center">Danh sách sản phẩm</h2>
 
       <!-- Nút thêm sản phẩm -->
-      <RouterLink to="/product-add" class="btn btn-success mb-4">Thêm sản phẩm</RouterLink>
+      <RouterLink to="/article-add" class="btn btn-success mb-4">Thêm sản phẩm</RouterLink>
 
       <!-- Bảng danh sách sản phẩm -->
       <table class="table table-striped">
@@ -29,7 +29,7 @@
                 :src="url + item.image"
                 class="object-fit-cover"
                 style="width:100px; height:100px"
-                alt="Product Image"
+                alt="Article Image"
               />
               <img
                 v-else
@@ -41,7 +41,7 @@
             </td>
             <td>
               <RouterLink
-                :to="{ name: 'productUpdate', params: { productId: item.id } }"
+                :to="{ name: 'articleUpdate', params: { articleId: item.id } }"
                 class="btn btn-primary btn-sm me-2"
               >
                 Sửa
@@ -110,7 +110,7 @@ export default {
       userName: "",
       roleId: "",
       items: [],
-      url: "http://localhost/web_ban_hang/web_ban_hang_backend/storage/app/public/products/",
+      url: "http://localhost/web_gioi_thieu_cty/company_web_laravel/storage/app/public/items",
       currentPage: 1,
       itemsPerPage: 10,
       selectedItemId: null,
@@ -139,7 +139,7 @@ export default {
   methods: {
     getItems() {
       axios
-        .get("http://127.0.0.1:8000/api/product", {
+        .get("http://127.0.0.1:8000/api/article", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -173,7 +173,7 @@ export default {
       if (!this.selectedItemId) return;
 
       axios
-        .delete(`http://127.0.0.1:8000/api/product/${this.selectedItemId}`, {
+        .delete(`http://127.0.0.1:8000/api/article/${this.selectedItemId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
