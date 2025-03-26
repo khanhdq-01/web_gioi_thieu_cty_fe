@@ -46,11 +46,7 @@ export default {
   methods: {
     async submitForm() {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/user-info', this.formData, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.post('http://127.0.0.1:8000/api/user-info', this.formData);
         this.successMessage = response.data.message;
         this.errorMessage = '';
         this.formData = { name: '', email: '', phone: '', message: '' }; // Reset form

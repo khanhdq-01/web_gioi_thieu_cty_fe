@@ -5,7 +5,7 @@
         <!-- Logo -->
         <RouterLink class="navbar-brand d-flex align-items-center" to="/">
           <img src="@/assets/logo.png" alt="Logo" class="logo me-2">
-          <span>My Website</span>
+          <span>HOME</span>
         </RouterLink>
 
         <!-- Toggle Button -->

@@ -11,9 +11,7 @@ import CompanyProfileView from '../views/CompanyProfileView.vue'
 import AchievementsView from '../views/AchievementsView.vue'
 import MapView from '../views/MapView.vue'
 import RecruitmentView from '../views/RecruitmentView.vue'
-import AddJob from '@/views/job/AddJob.vue'
-import DeleteJob from '@/views/job/DeleteJob.vue'
-import ChangeJob from '@/views/job/ChangeJob.vue'
+
 
 
 const router = createRouter({
@@ -79,22 +77,7 @@ const router = createRouter({
       path: '/map',
       name: 'map',
       component: MapView,
-    },
-    {
-      path: '/add-job',
-      name: 'addJob',
-      component: AddJob,
-    },
-    {
-      path: '/change-job',
-      name: 'changeJob',
-      component: ChangeJob,
-    },
-    {
-      path: '/delete-job',
-      name: 'deleteJob',
-      component: DeleteJob,
-    },
+    }
   ],
 })
 

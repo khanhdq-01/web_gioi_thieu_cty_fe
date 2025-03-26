@@ -14,7 +14,7 @@
     <TeamSection />
 
     <!-- User Info Section -->
-    <UserInforView />
+    <CompanyBlog />
   
     <!-- Contact Section -->
     <ContactSection />
@@ -29,7 +29,7 @@ import HeroSection from "@/views/home/HeroSection.vue";
 import AboutSection from "@/views/home/AboutSection.vue";
 import ServiceSection from "@/views/home/ServiceSection.vue";
 import TeamSection from "@/views/home/TeamSection.vue";
-import UserInforView from "@/views/home/UserInforView.vue";
+import CompanyBlog from "@/views/home/CompanyBlog.vue";
 import ContactSection from "@/views/home/ContactSection.vue";
 import Footer from "@/views/home/Footer.vue";
 
@@ -41,7 +41,7 @@ export default {
     ServiceSection,
     TeamSection,
     ContactSection,
-    UserInforView,
+    CompanyBlog,
     Footer
   },
   data() {

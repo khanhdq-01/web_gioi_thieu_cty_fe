@@ -19,7 +19,8 @@
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-6">
-            <img src="@/assets/images/no-image.png" alt="Placeholder Image" />
+            <img src="@/assets/images/4.webp" alt="Placeholder Image" class="img-fluid about-img" />
+
           </div>
           <div class="col-md-6">
             <h2 class="about-title">About Us</h2>
@@ -56,4 +57,89 @@ export default {
   line-height: 1.6;
   color: #555;
 }
+.about-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #222;
+  text-align: center; /* Căn giữa tiêu đề */
+  margin-bottom: 15px;
+  word-wrap: break-word; /* Đảm bảo văn bản không bị tràn */
+}
+
+.about-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+  text-align: justify;
+  word-wrap: break-word;
+}
+
+.btn-primary {
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 8px;
+  background-color: #007bff;
+  border: none;
+  transition: background-color 0.3s ease-in-out;
+  display: block;
+  width: fit-content;
+  margin: 20px auto 0; /* Canh giữa nút "Learn More" */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.about-us .container {
+  max-width: 1200px; /* Giới hạn chiều rộng container để tránh bị tràn */
+}
+
+.about-us .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.col-md-6 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Sắp xếp theo cột */
+  text-align: center;
+}
+
+.about-img {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease-in-out;
+}
+
+.about-img:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 1.8rem;
+  }
+  .about-text {
+    font-size: 1rem;
+  }
+  .about-us .row {
+    flex-direction: column;
+  }
+  .col-md-6 {
+    width: 100%;
+  }
+}
+
+
 </style>
