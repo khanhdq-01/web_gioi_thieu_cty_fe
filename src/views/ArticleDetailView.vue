@@ -35,90 +35,61 @@ export default {
   },
   data() {
     return {
-      userName: "",
-      roleId: "",
+      userName: localStorage.getItem("name") || "", // Không bắt buộc phải có user
+      roleId: localStorage.getItem("role_id") || "",
       article: {}, // Thông tin chi tiết sản phẩm
       url: "http://localhost/web_gioi_thieu_cty/company_web_laravel/storage/app/public/items", // Đường dẫn hình ảnh
     };
   },
   mounted() {
-    this.userName = localStorage.getItem("name");
-    this.roleId = localStorage.getItem("role_id");
-
-    if (!this.userName || this.userName === "" || this.userName == null) {
-      router.push({ name: "login" });
-    }
-    this.getArticle();
+    this.getArticle(); // Lấy dữ liệu sản phẩm
   },
   methods: {
     // Lấy thông tin chi tiết sản phẩm từ API
     getArticle() {
       axios
-        .get(`http://127.0.0.1:8000/api/article/${this.$route.params.articleId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
+        .get(`http://127.0.0.1:8000/api/article/${this.$route.params.articleId}`)
         .then((response) => {
           this.article = response.data.data;
         })
         .catch((error) => {
-          if (error.response && error.response.status === 401) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("email");
-            localStorage.removeItem("name");
-            localStorage.removeItem("role_id");
-            router.push({ name: "login" });
-          }
-          console.error(error);
+          console.error("Lỗi khi lấy bài viết:", error);
         });
     },
 
-    // Thêm sản phẩm vào giỏ hàng
+    // Thêm sản phẩm vào giỏ hàng (chỉ kiểm tra đăng nhập ở đây)
     addToCartAndRedirect(article) {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
-    router.push({ name: "login" });
-    return;
-  }
-
-  // Kiểm tra nếu article không tồn tại hoặc không có id
-  if (!article || !article.id) {
-    alert("Bài viết. Dữ liệu sản phẩm không hợp lệ.");
-    return;
-  }
-
-  axios
-    .post(
-      "http://127.0.0.1:8000/api/cart", // API thêm sản phẩm vào giỏ hàng
-      {
-        article_id: article.id,
-        quantity: 1,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+        router.push({ name: "login" });
+        return;
       }
-    )
-    .then(() => {
-      alert(`${article.name} đã được thêm vào giỏ hàng.`);
-      router.push({ name: "cart" }); // Chuyển hướng đến trang giỏ hàng
-    })
-    .catch((error) => {
-      if (error.response) {
-        console.error("Lỗi từ API:", error.response.data);
-        alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
-      } else {
-        console.error("Lỗi không xác định:", error);
-        alert("Đã xảy ra lỗi. Vui lòng kiểm tra kết nối mạng.");
-      }
-    });
-}
+
+      axios
+        .post(
+          "http://127.0.0.1:8000/api/cart",
+          {
+            article_id: article.id,
+            quantity: 1,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then(() => {
+          alert(`${article.name} đã được thêm vào giỏ hàng.`);
+          router.push({ name: "cart" });
+        })
+        .catch((error) => {
+          console.error("Lỗi khi thêm vào giỏ hàng:", error);
+          alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
+        });
+    },
   },
 };
 </script>
+
 
 <style scoped>
 .article-title {

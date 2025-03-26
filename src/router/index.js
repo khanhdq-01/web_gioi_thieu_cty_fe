@@ -9,6 +9,7 @@ import ArticleListView from '../views/ArticleListView.vue'
 import UserInforView from '../views/UserInforView.vue'
 import CompanyProfileView from '../views/CompanyProfileView.vue'
 import AchievementsView from '../views/AchievementsView.vue'
+import MapView from '../views/MapView.vue'
 import RecruitmentView from '../views/RecruitmentView.vue'
 
 
@@ -39,6 +40,7 @@ const router = createRouter({
       path: '/article/:articleId',
       name: 'articleUpdate',
       component: ArticleUpdateView,
+      meta: { requiresAuth: false }, // Đảm bảo không yêu cầu đăng nhập
     },
     {
       path: '/article-add',
@@ -59,7 +61,6 @@ const router = createRouter({
       path: '/user-infor',
       name: 'userInfor',
       component: UserInforView,
-      meta: { requiresAuth: true }
     },
     {
       path: '/achievements',
@@ -70,6 +71,11 @@ const router = createRouter({
       path: '/recruitment',
       name: 'recruitment',
       component: RecruitmentView,
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: MapView,
     },
   ],
 })

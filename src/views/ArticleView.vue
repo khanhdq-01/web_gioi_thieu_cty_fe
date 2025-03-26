@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar :name="userName" :role="roleId" />
+    <NavBar :name="userName" />
     <div class="container mt-5">
       <div class="row">
         <!-- Search Bar -->
@@ -10,7 +10,7 @@
             v-model="keyword"
             class="form-control search-bar"
             placeholder="🔍 Tìm kiếm bài viết"
-            @input="searchItem()"
+            @input="searchItem"
           />
         </div>
 
@@ -70,7 +70,6 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import axios from "axios";
-import router from "@/router";
 
 export default {
   components: {
@@ -78,14 +77,13 @@ export default {
   },
   data() {
     return {
-      userName: "",
-      roleId: "",
+      userName: localStorage.getItem("name") || "", // Lấy thông tin người dùng nếu có
       items: [],
       keyword: "",
       filteredItems: [],
       url: "http://localhost/web_gioi_thieu_cty/company_web_laravel/storage/app/public/items",
       currentPage: 1,
-      itemsPerPage: 5, // Giảm số lượng bài viết mỗi trang để phù hợp với layout mới
+      itemsPerPage: 5, 
     };
   },
   computed: {
@@ -99,30 +97,23 @@ export default {
     },
   },
   mounted() {
-    this.userName = localStorage.getItem("name");
-    this.roleId = localStorage.getItem("role_id");
-    if (!this.userName) {
-      router.push({ name: "login" });
-    }
     this.getItems();
   },
   methods: {
     getItems() {
+      let headers = {};
+      const token = localStorage.getItem("token");
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
       axios
-        .get("http://127.0.0.1:8000/api/article", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
+        .get("http://127.0.0.1:8000/api/article", { headers })
         .then((response) => {
           this.items = response.data.data;
           this.filteredItems = this.items;
         })
         .catch((error) => {
-          if (error.response?.status === 401) {
-            localStorage.clear();
-            router.push({ name: "login" });
-          }
           console.error(error);
         });
     },
@@ -163,40 +154,6 @@ export default {
 .article-card:hover {
   transform: scale(1.02);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.card-img-top {
-  height: 220px;
-  object-fit: cover;
-}
-
-.card-body {
-  background: #fff;
-  padding: 20px;
-}
-
-.card-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.card-text {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-/* Buttons */
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-  transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #004085;
 }
 
 /* Pagination */

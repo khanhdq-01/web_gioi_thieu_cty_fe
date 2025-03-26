@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createVuetify } from "vuetify";
 import "vuetify/styles"; 
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import App from './App.vue'
 import router from './router'
