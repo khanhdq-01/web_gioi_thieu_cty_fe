@@ -19,23 +19,32 @@
             <li class="nav-item">
               <RouterLink class="nav-link" to="/">🏠 Trang chủ</RouterLink>
             </li>
+            <li><RouterLink class="dropdown-item" to="/article">📄 Các bài viết</RouterLink></li>
+            <li><RouterLink class="dropdown-item" to="/achievements">🏆 Thành tựu</RouterLink></li>
+            <li><RouterLink class="dropdown-item" to="/recruitment">👨‍💼 Tuyển dụng</RouterLink></li>
             <li v-if="role == 1" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                 📝 Quản lý nội dung
               </a>
               <ul class="dropdown-menu">
-                <li><RouterLink class="dropdown-item" to="/article">📄 Các bài viết</RouterLink></li>
                 <li><RouterLink class="dropdown-item" to="/company-profile">🏢 Giới thiệu công ty</RouterLink></li>
-                <li><RouterLink class="dropdown-item" to="/achievements">🏆 Thành tựu</RouterLink></li>
-                <li><RouterLink class="dropdown-item" to="/recruitment">👨‍💼 Tuyển dụng</RouterLink></li>
                 <li><RouterLink class="dropdown-item" to="/article-list">📋 Quản lý bài viết</RouterLink></li>
                 <li><RouterLink class="dropdown-item" to="/user-infor">👤 Thông tin khách hàng</RouterLink></li>
               </ul>
             </li>
           </ul>
 
-          <!-- User Info & Logout -->
+          <!-- Social Links + User Info & Logout -->
           <div class="d-flex align-items-center">
+            <!-- Facebook & TikTok Icons -->
+            <a href="https://facebook.com" target="_blank" class="social-icon me-3">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://tiktok.com" target="_blank" class="social-icon me-3">
+              <i class="fab fa-tiktok"></i>
+            </a>
+
+            <!-- User Info & Logout -->
             <span class="user-info me-3">👋 Hi, <strong>{{ name }}</strong></span>
             <a-button type="primary" danger size="small" @click="logout">🚪 Đăng xuất</a-button>
           </div>
@@ -44,6 +53,7 @@
     </nav>
   </header>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -163,5 +173,15 @@ export default {
 .ant-btn-primary:hover {
   background: #d9363e;
   border-color: #d9363e;
+}
+/* Social Media Icons */
+.social-icon {
+  font-size: 30px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #007bff;
 }
 </style>
