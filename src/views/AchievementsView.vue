@@ -340,15 +340,13 @@ export default {
           },
         });
 
-        alert(response.data.message);
-
         const index = this.achievements.findIndex(a => a.id === this.form.id);
         if (index !== -1) {
           this.achievements[index] = response.data.data;
         }
 
         this.showModal = false;
-        this.isEditing = false; // Đặt lại chế độ về thêm mới
+        this.isEditing = false;
         this.resetForm();
       } catch (error) {
         console.error('Lỗi khi cập nhật thành tựu:', error.response?.data || error);
@@ -383,7 +381,6 @@ export default {
       this.selectedAchievement = response.data;
       this.showDetailModal = true; // Hiển thị modal chi tiết
     } catch (error) {
-      console.error("Lỗi khi lấy thông tin thành tựu:", error.response?.data || error);
       alert("Không thể tải dữ liệu, vui lòng thử lại!");
     }
   }

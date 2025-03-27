@@ -37,8 +37,9 @@
               accept="image/*"
             />
           </div>
-          <div class="mb-3">
-            <button class="btn btn-success form-control" type="submit">Lưu</button>
+          <div class="mb-3 d-flex gap-2">
+            <button class="btn btn-success flex-grow-1" type="submit">Lưu</button>
+            <button class="btn btn-secondary flex-grow-1" type="button" @click="cancel">Hủy</button>
           </div>
         </form>
       </div>
@@ -118,35 +119,47 @@ export default {
     imageChanged(e) {
       this.file = e.target.files[0];
     },
+    cancel() {
+      router.push({ name: "article" });
+    },
   },
 };
 </script>
   
-  <style scoped>
-  .container {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  h3 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    
-  }
-  
-  .form-label {
-    font-weight: bold;
-  }
-  
-  .btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-  }
-  
-  .btn-success:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-  }
-  </style>
+<style scoped>
+.container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+</style>

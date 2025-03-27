@@ -6,16 +6,13 @@
         <p><strong>Ngày:</strong> {{ formatDate(achievement.date) }}</p>
         <p><strong>Mô tả ngắn:</strong> {{ achievement.summary }}</p>
         <p><strong>Mô tả chi tiết:</strong> {{ achievement.description }}</p>
-  
         <img v-if="achievement.image" :src="achievement.image" alt="Achievement Image" class="img-fluid"/>
-  
         <button class="btn btn-secondary mt-3" @click="$emit('close')">
           Đóng
         </button>
       </div>
     </div>
   </template>
-  
   <script>
   export default {
     props: {
@@ -29,8 +26,8 @@
     },
   };
   </script>
-  
-  <style scoped>
+
+<style scoped>
   /* CSS cho modal */
   .modal-overlay {
     position: fixed;
@@ -43,12 +40,12 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .modal-content {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     width: 50%;
   }
-  </style>
+</style>
   

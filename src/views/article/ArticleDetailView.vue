@@ -11,15 +11,13 @@
             class="img-fluid rounded"
           />
         </div>
-
         <!-- Article Details -->
         <div class="col-md-6">
           <h1 class="article-title">{{ article.name }}</h1>
           <p class="article-description">{{ article.description }}</p>
-
-          <!-- Add to Cart Button -->
+          <button class="btn btn-secondary flex-grow-1" type="button" @click="cancel">Hủy</button>
         </div>
-      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -42,10 +40,9 @@ export default {
     };
   },
   mounted() {
-    this.getArticle(); // Lấy dữ liệu sản phẩm
+    this.getArticle();
   },
   methods: {
-    // Lấy thông tin chi tiết sản phẩm từ API
     getArticle() {
       axios
         .get(`http://127.0.0.1:8000/api/article/${this.$route.params.articleId}`)
@@ -56,8 +53,6 @@ export default {
           console.error("Lỗi khi lấy bài viết:", error);
         });
     },
-
-    // Thêm sản phẩm vào giỏ hàng (chỉ kiểm tra đăng nhập ở đây)
     addToCartAndRedirect(article) {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -65,7 +60,6 @@ export default {
         router.push({ name: "login" });
         return;
       }
-
       axios
         .post(
           "http://127.0.0.1:8000/api/cart",
@@ -85,6 +79,9 @@ export default {
           console.error("Lỗi khi thêm vào giỏ hàng:", error);
           alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
         });
+      },
+    cancel() {
+      router.push({ name: "article" });
     },
   },
 };
