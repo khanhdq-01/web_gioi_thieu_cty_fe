@@ -70,7 +70,7 @@
           <div class="card achievement-card h-100">
             <div class="card-img-top-container">
               <img 
-                :src="achievement.image || 'https://via.placeholder.com/300x200'" 
+                :src="achievement.image" 
                 class="card-img-top" 
                 :alt="achievement.title"
               >
@@ -118,17 +118,20 @@
 
       <!-- Empty State -->
       <div v-if="filteredAchievements.length === 0" class="text-center py-5">
-        <i class="fas fa-trophy fa-4x text-muted mb-3"></i>
-        <h4>Không tìm thấy thành tựu phù hợp</h4>
-        <p class="text-muted">Hãy thử thay đổi tiêu chí tìm kiếm</p>
-        <button 
-          v-if="roleId == 1" 
-          class="btn btn-primary"
-          @click="openAddModal"
-        >
-          <i class="fas fa-plus me-2"></i>Thêm thành tựu mới
-        </button>
-      </div>
+  <i class="fas fa-trophy fa-4x text-muted mb-3"></i>
+  <h4>Không tìm thấy thành tựu phù hợp</h4>
+  <p class="text-muted">Hãy thử thay đổi tiêu chí tìm kiếm</p>
+</div>
+
+<!-- Thêm nút riêng biệt bên ngoài empty state -->
+<div class="text-center mb-4" v-if="roleId == 1">
+  <button 
+    class="btn btn-primary"
+    @click="openAddModal"
+  >
+    <i class="fas fa-plus me-2"></i>Thêm thành tựu mới
+  </button>
+</div>
 
       <!-- Pagination -->
       <nav v-if="totalPages > 1" class="mt-5">
@@ -175,7 +178,7 @@ export default {
       itemsPerPage: 6,
       showModal: false,
       selectedAchievement: null,
-      modalMode: 'add', // 'add' or 'edit'
+      modalMode: 'add',
       categories: [
         'Giải thưởng',
         'Dự án',
@@ -194,8 +197,6 @@ export default {
   computed: {
     filteredAchievements() {
       let filtered = this.achievements;
-      
-      // Filter by search query
       if (this.searchQuery) {
         const query = this.searchQuery.toLowerCase();
         filtered = filtered.filter(item => 
@@ -203,18 +204,11 @@ export default {
           item.summary.toLowerCase().includes(query)
         );
       }
-      
-      // Filter by category
       if (this.selectedCategory) {
-        filtered = filtered.filter(item => 
-          item.category === this.selectedCategory
-        );
+        filtered = filtered.filter(item => item.category === this.selectedCategory);
       }
-      
-      // Pagination
       const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return filtered.slice(start, end);
+      return filtered.slice(start, start + this.itemsPerPage);
     },
     totalAchievements() {
       return this.achievements.length;
@@ -223,7 +217,7 @@ export default {
       return this.achievements.filter(a => a.status === 'active').length;
     },
     yearsExperience() {
-      if (this.achievements.length === 0) return 0;
+      if (!this.achievements.length) return 0;
       const oldest = Math.min(...this.achievements.map(a => new Date(a.date).getFullYear()));
       return new Date().getFullYear() - oldest;
     },
@@ -246,8 +240,7 @@ export default {
       }
     },
     formatDate(dateString) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString('vi-VN', options);
+      return new Date(dateString).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' });
     },
     viewDetail(id) {
       this.$router.push(`/achievements/${id}`);
@@ -271,11 +264,17 @@ export default {
     },
     async handleSave(achievementData) {
       try {
-        if (this.modalMode === 'add') {
-          await axios.post('/api/achievements', achievementData);
-        } else {
-          await axios.put(`/api/achievements/${achievementData.id}`, achievementData);
-        }
+        const url = `http://127.0.0.1:8000/api/achievements${this.modalMode === 'edit' ? '/' + achievementData.id : ''}`;
+        const method = this.modalMode === 'add' ? 'post' : 'put';
+        await axios({
+          method,
+          url,
+          data: achievementData,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        });
         this.showModal = false;
         await this.fetchAchievements();
       } catch (error) {
@@ -301,6 +300,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .achievement-page {
