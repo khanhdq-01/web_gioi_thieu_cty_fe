@@ -93,53 +93,53 @@ export default {
     },
 
     async saveEdit(id) {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Vui lòng đăng nhập để thực hiện thao tác");
-      return;
-    }
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("Vui lòng đăng nhập để thực hiện thao tác");
+          return;
+        }
 
-    const formData = new FormData();
-    formData.append("_method", "PUT"); // Laravel hiểu đây là PUT
-    formData.append("title", this.editTitle);
-    formData.append("content", this.editContent);
+        const formData = new FormData();
+        formData.append("_method", "PUT"); // Laravel hiểu đây là PUT
+        formData.append("title", this.editTitle);
+        formData.append("content", this.editContent);
 
-    if (this.editFile) {
-      formData.append("image_file", this.editFile);
-    }
+        if (this.editFile) {
+          formData.append("image_file", this.editFile);
+        }
 
-    const response = await axios.post(
-      `http://127.0.0.1:8000/api/company-profile/${id}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
+        const response = await axios.post(
+          `http://127.0.0.1:8000/api/company-profile/${id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        console.log("Response từ server:", response.data);
+
+        // Cập nhật UI
+        const updatedData = response.data.data || {};
+        const index = this.companyProfile.findIndex(c => c.id === id);
+        if (index !== -1) {
+          this.companyProfile[index] = {
+            ...this.companyProfile[index],
+            ...updatedData,
+            image: updatedData.image_path || this.companyProfile[index].image,
+          };
+        }
+
+        this.editingCompanyId = null;
+        alert("Cập nhật thành công!");
+        
+      } catch (error) {
+        console.error("Lỗi khi cập nhật:", error);
+        alert(`Cập nhật thất bại: ${error.response?.data?.message || error.message}`);
       }
-    );
-
-    console.log("Response từ server:", response.data);
-
-    // Cập nhật UI
-    const updatedData = response.data.data || {};
-    const index = this.companyProfile.findIndex(c => c.id === id);
-    if (index !== -1) {
-      this.companyProfile[index] = {
-        ...this.companyProfile[index],
-        ...updatedData,
-        image: updatedData.image_path || this.companyProfile[index].image,
-      };
-    }
-
-    this.editingCompanyId = null;
-    alert("Cập nhật thành công!");
-    
-  } catch (error) {
-    console.error("Lỗi khi cập nhật:", error);
-    alert(`Cập nhật thất bại: ${error.response?.data?.message || error.message}`);
-  }
 },
 
 

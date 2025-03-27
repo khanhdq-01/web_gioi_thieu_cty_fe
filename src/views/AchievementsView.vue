@@ -4,10 +4,6 @@
     
     <div class="container py-5">
       <!-- Header Section -->
-      <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-primary">Thành Tựu & Hoạt Động Công Nghệ</h1>
-        <p class="lead">Những dấu ấn nổi bật và đóng góp cho cộng đồng công nghệ</p>
-      </div>
 
       <!-- Filter Controls -->
       <div class="row mb-4">
@@ -98,87 +94,84 @@
               <button 
                 v-if="roleId == 1" 
                 class="btn btn-outline-secondary btn-sm ms-2"
-                @click="editAchievement(achievement)"
+                @click="editAchievement(achievement.id)"
               >
                 Chỉnh sửa
+              </button>
+              <button 
+                v-if="roleId == 1" 
+                class="btn btn-outline-secondary btn-sm ms-2"
+                @click="deleteAchievement(achievement.id)"
+              >
+                Xóa
               </button>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Add/Edit Modal -->
-      <AchievementModal
-        v-if="showModal"
-        :achievement="selectedAchievement"
-        :mode="modalMode"
-        @close="showModal = false"
-        @save="handleSave"
-      />
-
       <!-- Empty State -->
       <div v-if="filteredAchievements.length === 0" class="text-center py-5">
-  <i class="fas fa-trophy fa-4x text-muted mb-3"></i>
-  <h4>Không tìm thấy thành tựu phù hợp</h4>
-  <p class="text-muted">Hãy thử thay đổi tiêu chí tìm kiếm</p>
-</div>
+        <i class="fas fa-trophy fa-4x text-muted mb-3"></i>
+        <h4>Không tìm thấy thành tựu phù hợp</h4>
+        <p class="text-muted">Hãy thử thay đổi tiêu chí tìm kiếm</p>
+      </div>
 
-<!-- Thêm nút riêng biệt bên ngoài empty state -->
-<div class="text-center mb-4" v-if="roleId == 1">
-  <button 
-    class="btn btn-primary"
-    @click="openAddModal"
-  >
-    <i class="fas fa-plus me-2"></i>Thêm thành tựu mới
-  </button>
-</div>
-
-      <!-- Pagination -->
-      <nav v-if="totalPages > 1" class="mt-5">
-        <ul class="pagination justify-content-center">
-          <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <button class="page-link" @click="prevPage">Trước</button>
-          </li>
-          <li 
-            v-for="page in totalPages" 
-            :key="page" 
-            class="page-item" 
-            :class="{ active: currentPage === page }"
-          >
-            <button class="page-link" @click="goToPage(page)">{{ page }}</button>
-          </li>
-          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-            <button class="page-link" @click="nextPage">Sau</button>
-          </li>
-        </ul>
-      </nav>
+      <!-- Thêm nút riêng biệt bên ngoài empty state -->
+      <div class="text-center mb-4" v-if="roleId == 1">
+        <button 
+          class="btn btn-primary"
+          @click="openAddModal"
+        >
+          <i class="fas fa-plus me-2"></i>Thêm thành tựu mới
+        </button>
+      </div>
     </div>
+    <!--Form-->
+
+    <AchievementForm
+      v-if="showModal"
+      :isEditing="isEditing"
+      :form="form"
+      @close="showModal = false"
+      @submit="isEditing ? updateAchievement() : submitAchievement()"
+      @file-upload="handleFileUpload"
+    />
+
+    <!---view detail-->
+      <AchievementDetail 
+        :show="showDetailModal"
+        :achievement="selectedAchievement"
+        @close="showDetailModal = false"
+      />
   </div>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import AchievementModal from '@/views/AchievementModal.vue';
+import AchievementDetail from "@/views/achievement/AchievementDetail.vue";
+import AchievementForm from "@/views/achievement/AchievementForm.vue";
 import axios from 'axios';
 
 export default {
   name: 'AchievementPage',
   components: { 
     NavBar,
-    AchievementModal
+    AchievementDetail,
+    AchievementForm
   },
   data() {
     return {
       userName: '',
+      isSubmitting: false, // Tránh gọi API nhiều lần
       roleId: '',
+      selectedAchievement: {},
+      showDetailModal: false,
       achievements: [],
       searchQuery: '',
       selectedCategory: '',
       currentPage: 1,
       itemsPerPage: 6,
       showModal: false,
-      selectedAchievement: null,
-      modalMode: 'add',
       categories: [
         'Giải thưởng',
         'Dự án',
@@ -191,7 +184,16 @@ export default {
         total: 0,
         activeProjects: 0,
         yearsExperience: 0
-      }
+      },
+      form: {
+        title: '',
+        category: '',
+        date: '',
+        summary: '',
+        description: '',
+        image_file: null,
+        is_featured: false,
+      },
     };
   },
   computed: {
@@ -223,7 +225,7 @@ export default {
     },
     totalPages() {
       return Math.ceil(this.achievements.length / this.itemsPerPage);
-    }
+    },
   },
   async mounted() {
     this.userName = localStorage.getItem('name');
@@ -231,6 +233,66 @@ export default {
     await this.fetchAchievements();
   },
   methods: {
+    openAddModal() {
+        this.form = {
+          id: null,
+          title: '',
+          category: '',
+          date: '',
+          summary: '',
+          description: '',
+          image_file: null,
+          is_featured: false,
+        };
+        this.isEditing = false;
+        this.showModal = true;
+      },
+    handleFileUpload(event) {
+      this.form.image_file = event.target.files[0];
+    },
+    async submitAchievement() {
+      if (this.isSubmitting) return; // Nếu đang gửi, bỏ qua
+    this.isSubmitting = true;
+      try {
+        let formData = new FormData();
+        formData.append('title', this.form.title);
+        formData.append('category', this.form.category);
+        formData.append('date', this.form.date);
+        formData.append('summary', this.form.summary);
+        formData.append('description', this.form.description);
+        formData.append('is_featured', this.form.is_featured ? 1 : 0);
+        if (this.form.image_file) {
+          formData.append('image_file', this.form.image_file);
+        }
+
+        const response = await axios.post('http://127.0.0.1:8000/api/achievements', formData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        this.fetchAchievements();
+        this.showModal = false;
+        this.resetForm();
+
+      } catch (error) {
+        console.error('Lỗi khi thêm thành tựu:', error.response?.data || error);
+      
+      }  finally {
+      this.isSubmitting = false; 
+    }
+    },
+    resetForm() {
+      this.form = {
+        title: '',
+        category: '',
+        date: '',
+        summary: '',
+        description: '',
+        image_file: null,
+        is_featured: false,
+      };
+    },
     async fetchAchievements() {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/achievements');
@@ -242,130 +304,89 @@ export default {
     formatDate(dateString) {
       return new Date(dateString).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' });
     },
-    viewDetail(id) {
-      this.$router.push(`/achievements/${id}`);
-    },
-    editAchievement(achievement) {
-      this.selectedAchievement = { ...achievement };
-      this.modalMode = 'edit';
-      this.showModal = true;
-    },
-    openAddModal() {
-      this.selectedAchievement = {
-        title: '',
-        category: '',
-        date: new Date().toISOString().split('T')[0],
-        summary: '',
-        description: '',
-        image: ''
-      };
-      this.modalMode = 'add';
-      this.showModal = true;
-    },
-    async handleSave(achievementData) {
+    async editAchievement(id) {
       try {
-        const url = `http://127.0.0.1:8000/api/achievements${this.modalMode === 'edit' ? '/' + achievementData.id : ''}`;
-        const method = this.modalMode === 'add' ? 'post' : 'put';
-        await axios({
-          method,
-          url,
-          data: achievementData,
+        const response = await axios.get(`http://127.0.0.1:8000/api/achievements/${id}`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'multipart/form-data'
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
+          },
         });
-        this.showModal = false;
-        await this.fetchAchievements();
+        this.form = { ...response.data }; // Đổ dữ liệu vào form
+        this.isEditing = true; // Đặt chế độ chỉnh sửa
+        this.showModal = true;
       } catch (error) {
-        console.error('Error saving achievement:', error);
+        console.error('Lỗi khi lấy thông tin thành tựu:', error.response?.data || error);
       }
     },
-    goToPage(page) {
-      this.currentPage = page;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    },
-    prevPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    async updateAchievement() {
+      try {
+        let formData = new FormData();
+        formData.append('_method', 'PUT');
+        formData.append('title', this.form.title);
+        formData.append('category', this.form.category);
+        formData.append('date', this.form.date);
+        formData.append('summary', this.form.summary);
+        formData.append('description', this.form.description);
+        formData.append('is_featured', this.form.is_featured ? 1 : 0);
+        if (this.form.image_file) {
+          formData.append('image_file', this.form.image_file);
+        }
+
+        const response = await axios.post(`http://127.0.0.1:8000/api/achievements/${this.form.id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        alert(response.data.message);
+
+        const index = this.achievements.findIndex(a => a.id === this.form.id);
+        if (index !== -1) {
+          this.achievements[index] = response.data.data;
+        }
+
+        this.showModal = false;
+        this.isEditing = false; // Đặt lại chế độ về thêm mới
+        this.resetForm();
+      } catch (error) {
+        console.error('Lỗi khi cập nhật thành tựu:', error.response?.data || error);
       }
     },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+    async deleteAchievement(id) {
+    if (!confirm("Bạn có chắc chắn muốn xóa thành tựu này?")) {
+      return;
     }
+
+    try {
+      await axios.delete(`http://127.0.0.1:8000/api/achievements/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
+          },
+      });
+      
+      // Cập nhật danh sách sau khi xóa
+      this.achievements = this.achievements.filter(a => a.id !== id);
+
+      alert("Xóa thành tựu thành công!");
+    } catch (error) {
+      console.error("Lỗi khi xóa thành tựu:", error.response?.data || error);
+      alert("Không thể xóa thành tựu. Vui lòng thử lại.");
+    }
+    },
+    async viewDetail(id) {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/achievements/${id}`);
+      this.selectedAchievement = response.data;
+      this.showDetailModal = true; // Hiển thị modal chi tiết
+    } catch (error) {
+      console.error("Lỗi khi lấy thông tin thành tựu:", error.response?.data || error);
+      alert("Không thể tải dữ liệu, vui lòng thử lại!");
+    }
+  }
   }
 };
 </script>
-
-
-<style scoped>
-.achievement-page {
-  background-color: #f8f9fa;
-  min-height: 100vh;
-}
-
-.stat-card {
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-}
-
-.achievement-card {
-  border: none;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
-
-.achievement-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.card-img-top-container {
-  position: relative;
-  height: 200px;
-  overflow: hidden;
-}
-
-.card-img-top {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.achievement-card:hover .card-img-top {
-  transform: scale(1.05);
-}
-
-.badge {
-  font-size: 0.8rem;
-  padding: 5px 10px;
-}
-
-.page-item.active .page-link {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-}
-
-.page-link {
-  color: #0d6efd;
-}
-
-.empty-state {
-  background-color: white;
-  border-radius: 10px;
-  padding: 3rem;
-}
-</style>
