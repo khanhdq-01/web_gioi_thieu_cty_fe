@@ -20,39 +20,31 @@
               <RouterLink class="nav-link" to="/">🏠 Trang chủ</RouterLink>
             </li> -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                 🏠 Trang chủ
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><RouterLink class="dropdown-item" to="/article">📄 Các bài viết</RouterLink></li>
-                <li><RouterLink class="dropdown-item" to="/achievements">🏆 Thành tựu</RouterLink></li>
-                <li><RouterLink class="dropdown-item" to="/recruitment">👨‍💼 Tuyển dụng</RouterLink></li>
+                <li><RouterLink class="dropdown-item" to="/">a</RouterLink></li>
+                <li><RouterLink class="dropdown-item" to="/">b</RouterLink></li>
+                <li><RouterLink class="dropdown-item" to="/">c</RouterLink></li>
               </ul>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/article">📄 Các bài viết</RouterLink>
+              <RouterLink class="nav-link" to="/article">Blog</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/achievements">🏆 Thành tựu</RouterLink>
+              <RouterLink class="nav-link" to="/achievements">Thành tựu</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/recruitment">👨‍💼 Tuyển dụng</RouterLink>
+              <RouterLink class="nav-link" to="/recruitment">Tuyển dụng</RouterLink>
             </li>
             <li class="nav-item">
               <RouterLink class="nav-link bi bi-geo-alt-fill" to="/map" >Vị Trí</RouterLink>
             </li>
-
-            <!-- Quản lý nội dung (chỉ hiển thị nếu user role = 1) -->
-            <li v-if="isLoggedIn && userRole == 1" class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                📝 Quản lý nội dung
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><RouterLink class="dropdown-item" to="/company-profile">🏢 Giới thiệu công ty</RouterLink></li>
-                <li><RouterLink class="dropdown-item" to="/article-list">📋 Quản lý bài viết</RouterLink></li>
-                <li><RouterLink class="dropdown-item" to="/user-infor">👤 Thông tin khách hàng</RouterLink></li>
-              </ul>
+            <li v-if="isLoggedIn && userRole == 1" class="nav-item">
+              <RouterLink class="dropdown-item" to="/user-infor">Thông tin khách hàng</RouterLink>
             </li>
+
           </ul>
 
           <!-- Social Links + User Info & Logout -->

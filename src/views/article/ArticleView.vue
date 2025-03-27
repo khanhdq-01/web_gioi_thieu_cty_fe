@@ -4,6 +4,7 @@
     <div class="container mt-5">
       <div class="row">
         <!-- Search Bar -->
+        <RouterLink to="/article-add" class="btn btn-success mb-4">Thêm sản phẩm</RouterLink>
         <div class="col-12 mb-4">
           <input
             type="text"
@@ -39,8 +40,20 @@
                         :to="{ name: 'articleDetail', params: { articleId: item.id } }"
                         class="btn btn-primary"
                       >
-                        📜 Xem chi tiết
+                        Xem chi tiết
                       </RouterLink>
+                      <RouterLink
+                        :to="{ name: 'articleUpdate', params: { articleId: item.id } }"
+                        class="btn btn-primary btn-sm me-2"
+                      >
+                        Sửa
+                      </RouterLink>
+                      <button
+                        @click="confirmDelete(item.id)"
+                        class="btn btn-danger btn-sm"
+                      >
+                        Xóa
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -64,6 +77,14 @@
         </div>
       </div>
     </div>
+              <!-- Modal xác nhận xóa -->
+              <div v-if="showConfirmModal" class="modal-backdrop">
+                <div class="modal-content">
+                  <p>Bạn có chắc chắn muốn xóa sản phẩm này?</p>
+                  <button @click="deleteItem" class="btn btn-danger">Xóa</button>
+                  <button @click="cancelDelete" class="btn btn-secondary">Hủy</button>
+                </div>
+              </div>
   </div>
 </template>
 
@@ -84,6 +105,9 @@ export default {
       url: "http://localhost/web_gioi_thieu_cty/company_web_laravel/storage/app/public/items",
       currentPage: 1,
       itemsPerPage: 5, 
+      showConfirmModal: false,
+      showSuccessModal: false,
+      selectedItemId: null
     };
   },
   computed: {
@@ -117,6 +141,42 @@ export default {
           console.error(error);
         });
     },
+    confirmDelete(id) {
+      this.selectedItemId = id;
+      this.showConfirmModal = true;
+    },
+    cancelDelete() {
+      this.selectedItemId = null;
+      this.showConfirmModal = false;
+    },
+    deleteItem() {
+  if (!this.selectedItemId) return;
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Bạn chưa đăng nhập!");
+    return;
+  }
+
+  axios
+    .delete(`http://127.0.0.1:8000/api/article/${this.selectedItemId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then(() => {
+      this.items = this.items.filter((item) => item.id !== this.selectedItemId);
+      this.showConfirmModal = false;
+      this.showSuccessModal = true;
+      this.getItems();
+      setTimeout(() => {
+        this.showSuccessModal = false;
+      }, 1000);
+    })
+    .catch((error) => {
+      console.error("Lỗi khi xóa sản phẩm:", error);
+      alert("Không thể xóa sản phẩm, vui lòng thử lại!");
+    });
+},
+
     searchItem() {
       this.filteredItems = this.items.filter((item) =>
         item.name.toLowerCase().includes(this.keyword.toLowerCase())
@@ -132,33 +192,23 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-/* Search Bar */
-.search-bar {
-  border-radius: 20px;
-  padding: 12px 20px;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
 }
 
-/* Article Card */
-.article-card {
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  margin-bottom: 20px;
-}
-
-.article-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Pagination */
-.pagination-info {
-  font-size: 1rem;
-  font-weight: bold;
-}
 </style>

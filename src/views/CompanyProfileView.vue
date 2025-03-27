@@ -144,6 +144,16 @@
       if (response.data && (response.data.success || response.data.id)) {
         this.successMessage = response.data.message || 'Thêm thông tin thành công!';
         this.resetForm();
+        //chuyen den id la company o trang home
+        this.$router.push("/").then(() => { 
+        this.$nextTick(() => {
+          const section = document.getElementById("company");
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      });
+
       } else {
         throw new Error(response.data.message || 'Phản hồi API không hợp lệ');
       }

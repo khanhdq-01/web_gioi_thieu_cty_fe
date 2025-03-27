@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
-import ArticleDetailView from '../views/ArticleDetailView.vue'
-import ArticleView from '../views/ArticleView.vue'
-import ArticleUpdateView from '../views/ArticleUpdateView.vue'
-import ArticleAddView from '../views/ArticleAddView.vue'
-import ArticleListView from '../views/ArticleListView.vue'
+import ArticleDetailView from '../views/article/ArticleDetailView.vue'
+import ArticleView from '../views/article/ArticleView.vue'
+import ArticleUpdateView from '../views/article/ArticleUpdateView.vue'
+import ArticleAddView from '../views/article/ArticleAddView.vue'
+import CompanyBlog from '../views/home/CompanyBlog.vue'
 import UserInforView from '../views/UserInforView.vue'
 import CompanyProfileView from '../views/CompanyProfileView.vue'
 import AchievementsView from '../views/AchievementsView.vue'
@@ -49,11 +49,6 @@ const router = createRouter({
       component: ArticleAddView,
     },
     {
-      path: '/article-list',
-      name: 'articleList',
-      component: ArticleListView,
-    },
-    {
       path: '/company-profile',
       name: 'companyProfile',
       component: CompanyProfileView,
@@ -77,6 +72,11 @@ const router = createRouter({
       path: '/map',
       name: 'map',
       component: MapView,
+    },
+    {
+      path: '/company-blog',
+      name: 'companyBlog',
+      component: CompanyBlog,
     }
   ],
 })

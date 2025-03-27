@@ -1,7 +1,7 @@
 <template>
   <section class="user-infos py-5">
     <div class="container">
-      <h2 class="text-center mb-4">Giới thiệu công ty</h2>
+      <h2 class="text-center mb-4" id="company">Giới thiệu công ty</h2>
       <div class="row justify-content-center">
         <div class="col-lg-10">
           <div class="album-container d-flex flex-wrap justify-content-center">
@@ -9,15 +9,18 @@
               <img :src="getImageUrl(company.image)" alt="Company image" class="card-img-top">
               <div class="card-body">
                 <h5 class="card-title">{{ company.title }}</h5>
-                <p class="card-text">{{ company.content }}</p>
+                  <p class="card-text">{{ company.content }}</p>
 
-                <button v-if="roleId == 1" @click="toggleEdit(company)" class="btn btn-warning btn-sm mx-2">
-                  {{ editingCompanyId === company.id ? 'Đóng' : 'Cập nhật' }}
-                </button>
-                <button v-if="roleId == 1 && editingCompanyId !== company.id" @click="deleteCompanyProfile(company.id)" class="btn btn-danger btn-sm">
-                  Xóa
-                </button>
+                  <button class="btn btn-primary btn-sm mt-2" @click="goToAddCompany">
+                    Thêm Giới thiệu Công Ty
+                  </button>
 
+                  <button v-if="roleId == 1" @click="toggleEdit(company)" class="btn btn-warning btn-sm mx-2">
+                    {{ editingCompanyId === company.id ? 'Đóng' : 'Cập nhật' }}
+                  </button>
+                  <button v-if="roleId == 1 && editingCompanyId !== company.id" @click="deleteCompanyProfile(company.id)" class="btn btn-danger btn-sm">
+                    Xóa
+                  </button>
                 <!-- Form chỉnh sửa -->
                 <div v-if="editingCompanyId === company.id" class="edit-form mt-3 p-3 bg-light rounded">
                   <div class="form-group">
@@ -71,6 +74,9 @@ export default {
       } catch (error) {
         console.error('Error fetching company profiles:', error);
       }
+    },
+    goToAddCompany() {
+    this.$router.push('/company-profile');
     },
 
     getImageUrl(path) {
