@@ -11,7 +11,7 @@
                 <h5 class="card-title">{{ company.title }}</h5>
                   <p class="card-text">{{ company.content }}</p>
 
-                  <button class="btn btn-primary btn-sm mt-2" @click="goToAddCompany">
+                  <button v-if="roleId == 1" class="btn btn-primary btn-sm mt-2" @click="goToAddCompany">
                     Thêm Giới thiệu Công Ty
                   </button>
 

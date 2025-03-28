@@ -7,7 +7,10 @@
           <input type="text" v-model="form.title" required />
   
           <label>Danh mục:</label>
-          <input type="text" v-model="form.category" required />
+          <input type="text" v-model="form.category" list="categories" required />
+          <datalist id="categories">
+            <option v-for="item in categories" :key="item" :value="item"></option>
+          </datalist>
   
           <label>Ngày:</label>
           <input type="date" v-model="form.date" required />
@@ -37,6 +40,21 @@
   
   <script>
   export default {
+    data() {
+      return {
+        form: {
+          category: "",
+        },
+        categories: [
+            'Giải thưởng',
+            'Dự án',
+            'Nghiên cứu',
+            'Hội thảo',
+            'Đào tạo',
+            'Cộng đồng'
+          ],
+      };
+    },
     props: {
       isEditing: Boolean,
       form: Object,

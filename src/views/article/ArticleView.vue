@@ -4,7 +4,7 @@
     <div class="container mt-5">
       <div class="row">
         <!-- Search Bar -->
-        <RouterLink to="/article-add" class="btn btn-success mb-4">Thêm sản phẩm</RouterLink>
+        <RouterLink v-if="roleId == 1" to="/article-add" class="btn btn-success mb-4">Thêm sản phẩm</RouterLink>
         <div class="col-12 mb-4">
           <input
             type="text"
@@ -43,12 +43,14 @@
                         Xem chi tiết
                       </RouterLink>
                       <RouterLink
+                      v-if="roleId == 1"
                         :to="{ name: 'articleUpdate', params: { articleId: item.id } }"
                         class="btn btn-primary btn-sm me-2"
                       >
                         Sửa
                       </RouterLink>
                       <button
+                      v-if="roleId == 1"
                         @click="confirmDelete(item.id)"
                         class="btn btn-danger btn-sm"
                       >
