@@ -1,0 +1,108 @@
+
+.company {
+  background: #f8f9fa;
+  padding: 60px 20px;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.company-heading {
+  text-align: center;
+  font-size: 1.2rem; /* to hơn */
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 20px;
+  font-weight: 700;
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.company-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 4px;
+  width: 0;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  opacity: 0;
+}
+
+.company-heading:hover::after {
+  width: 80px;
+  opacity: 1;
+}
+
+
+.company-item {
+  flex: 0 0 25%;
+  padding: 1rem;
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
+}
+
+.company-item:hover {
+  transform: scale(1.05);
+}
+
+.company-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+  margin-bottom: 10px;
+}
+
+.company-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.company-content {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 123, 255, 0.8);
+  color: white;
+  border: none;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+.scroll-btn:hover {
+  background: #0056b3;
+}
+.scroll-btn.left {
+  left: 10px;
+}
+.scroll-btn.right {
+  right: 10px;
+}
+.company {
+  background: #fff9f3; /* hoặc giữ nguyên background cũ */
+  width: 100%;
+}
+
+.company-content {
+  width: 60%;
+  margin: 0 auto;
+}

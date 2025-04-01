@@ -1,31 +1,31 @@
 <template>
-  <div>
-    <NavBar :name="userName" :role="roleId" />
-    <div class="container mt-5">
-      <div class="row">
-        <!-- Article Image -->
-        <div class="col-md-6">
-          <img
-            :src="url + article.image"
-            alt="Article Image"
-            class="img-fluid rounded"
-          />
-        </div>
-        <!-- Article Details -->
-        <div class="col-md-6">
-          <h1 class="article-title">{{ article.name }}</h1>
-          <p class="article-description">{{ article.description }}</p>
-          <button class="btn btn-secondary flex-grow-1" type="button" @click="cancel">Hủy</button>
-        </div>
+  <NavBar :name="userName" />
+
+  <section class="hero-details" v-if="articleData">
+    <div class="article-details">
+      <h3>Chi tiết bài viết</h3>
     </div>
+
+    <div class="article-item">
+      <div class="article-image-details" v-if="articleData.image">
+        <img :src="url + articleData.image" class="article-image" />
+      </div>
+      <div class="article-text-details">
+        <h5 class="article-name">{{ articleData.name }}</h5>
+        <p class="article-description">{{ articleData.description }}</p>
+      </div>
     </div>
-  </div>
+
+    <div class="mb-3">
+      <router-link to="/article" class="btn btn-secondary ms-2">Quay lại</router-link>
+    </div>
+  </section>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
 import axios from "axios";
-import router from "@/router";
+import "@/assets/css/articlehome.css";
 
 export default {
   components: {
@@ -33,83 +33,32 @@ export default {
   },
   data() {
     return {
-      userName: localStorage.getItem("name") || "", // Không bắt buộc phải có user
-      roleId: localStorage.getItem("role_id") || "",
-      article: {}, // Thông tin chi tiết sản phẩm
-      url: "http://localhost/web_gioi_thieu_cty/company_web_laravel/storage/app/public/items", // Đường dẫn hình ảnh
+      articleData: null, // ban đầu là null
+      url: 'http://localhost/web_company/web_gioi_thieu_cty_be/storage/app/public/articles/',
+      userName: localStorage.getItem('name') || '',
     };
   },
   mounted() {
-    this.getArticle();
+    this.fetchArticleData();
   },
   methods: {
-    getArticle() {
-      axios
-        .get(`http://127.0.0.1:8000/api/article/${this.$route.params.articleId}`)
-        .then((response) => {
-          this.article = response.data.data;
-        })
-        .catch((error) => {
-          console.error("Lỗi khi lấy bài viết:", error);
-        });
-    },
-    addToCartAndRedirect(article) {
+    async fetchArticleData() {
       const token = localStorage.getItem("token");
-      if (!token) {
-        alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
-        router.push({ name: "login" });
-        return;
-      }
-      axios
-        .post(
-          "http://127.0.0.1:8000/api/cart",
-          {
-            article_id: article.id,
-            quantity: 1,
+      const articleId = this.$route.params.articleId;
+
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/article/${articleId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
-        .then(() => {
-          alert(`${article.name} đã được thêm vào giỏ hàng.`);
-          router.push({ name: "cart" });
-        })
-        .catch((error) => {
-          console.error("Lỗi khi thêm vào giỏ hàng:", error);
-          alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
         });
-      },
-    cancel() {
-      router.push({ name: "article" });
+
+        this.articleData = response.data;
+        console.log("Article fetched:", this.articleData);
+      } catch (error) {
+        console.error("Error fetching article data:", error);
+      }
     },
   },
 };
 </script>
-
-
-<style scoped>
-.article-title {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.article-price {
-  font-size: 1.5rem;
-}
-
-.article-description {
-  font-size: 1.2rem;
-  margin-top: 1rem;
-}
-
-.article-stock {
-  font-size: 1rem;
-  margin-top: 1rem;
-}
-
-.img-fluid {
-  max-height: 400px;
-  object-fit: cover;
-}
-</style>

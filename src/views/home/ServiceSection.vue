@@ -1,20 +1,27 @@
 <template>
   <section class="services py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-4">Our Services</h2>
+    <div class="container-services">
+      <div class="service-heading text-center py-3">
+      <h3>について</h3>
+      </div>
       <div class="position-relative">
         <button class="scroll-btn left" @click="scrollLeft">
           <i class="fas fa-chevron-left"></i>
         </button>
-        <div class="overflow-hidden">
-          <div class="row flex-nowrap service-list">
-            <div class="col-md-4 px-2" v-for="(service, index) in services" :key="index">
-              <div class="card service-card h-100">
-                <div class="card-body text-center">
-                  <i :class="service.icon + ' service-icon'"></i>
-                  <h5 class="card-title">{{ service.title }}</h5>
-                  <p class="card-text">{{ service.description }}</p>
-                </div>
+        <div
+          class="row flex-nowrap service-list"
+          ref="serviceList"
+        >
+          <div
+            class="col-md-4 col-sm-6 px-2"
+            v-for="(service, index) in repeatedServices"
+            :key="index"
+          >
+            <div class="card service-card h-100 shadow-sm border-light rounded">
+              <div class="card-body text-center p-4">
+                <i :class="service.icon + ' service-icon mb-3'"></i>
+                <h5 class="card-title h4 font-weight-bold text-dark">{{ service.title }}</h5>
+                <p class="card-text text-muted">{{ service.description }}</p>
               </div>
             </div>
           </div>
@@ -27,8 +34,8 @@
   </section>
 </template>
 
-
 <script>
+import "@/assets/css/service.css";
 export default {
   name: "ServiceSection",
   data() {
@@ -42,70 +49,50 @@ export default {
       ],
     };
   },
+  computed: {
+    repeatedServices() {
+      return [...this.services, ...this.services]; // nhân đôi để scroll mượt hơn
+    }
+  },
   methods: {
+    scrollByOneCard(direction = "right") {
+      const list = this.$refs.serviceList;
+      const card = list.querySelector(".service-card");
+
+      if (!card) return;
+
+      const cardWidth = card.offsetWidth + 16; // thêm khoảng cách padding/margin
+
+      const scrollAmount = direction === "right" ? cardWidth : -cardWidth;
+      const maxScroll = list.scrollWidth / 2; // vì lặp lại
+
+      list.scrollBy({ left: scrollAmount, behavior: "smooth" });
+
+      setTimeout(() => {
+        if (direction === "right" && list.scrollLeft >= maxScroll) {
+          list.scrollLeft = 0;
+        } else if (direction === "left" && list.scrollLeft <= 0) {
+          list.scrollLeft = maxScroll;
+        }
+      }, 400);
+    },
     scrollLeft() {
-      this.$el.querySelector(".service-list").scrollBy({ left: -350, behavior: "smooth" });
+      this.scrollByOneCard("left");
     },
     scrollRight() {
-      this.$el.querySelector(".service-list").scrollBy({ left: 350, behavior: "smooth" });
-    },
+      this.scrollByOneCard("right");
+    }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.serviceList.scrollLeft = 0;
+    });
+  }
 };
+
+
+
 </script>
 
 
-<style scoped>
-.service-list {
-  display: flex;
-  gap: 15px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none; /* Ẩn scrollbar trên Firefox */
-}
 
-.service-list::-webkit-scrollbar {
-  display: none; /* Ẩn scrollbar trên Chrome/Safari */
-}
-
-.service-card {
-  border: none;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-}
-
-.service-icon {
-  font-size: 3rem;
-  color: #007bff;
-}
-
-.scroll-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  z-index: 10;
-  border-radius: 50%;
-  font-size: 1.2rem;
-}
-
-.scroll-btn:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.scroll-btn.left {
-  left: -15px;
-}
-
-.scroll-btn.right {
-  right: -15px;
-}
-
-</style>

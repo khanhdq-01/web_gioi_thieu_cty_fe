@@ -1,0 +1,104 @@
+
+.company-history-heading {
+  text-align: center;
+  font-size: 1.2rem; /* to hơn */
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 20px;
+  font-weight: 700;
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.company-history-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 4px;
+  width: 0;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  opacity: 0;
+}
+
+.company-history-heading:hover::after {
+  width: 80px;
+  opacity: 1;
+}
+
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 60px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, #e66465, #9198e5);
+  z-index: 0;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-date {
+  min-width: 100px;
+  text-align: center;
+}
+
+.timeline-date .year {
+  display: block;
+  font-weight: bold;
+  font-size: 1.2rem;
+  background-color: #f9c74f;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.timeline-date .month {
+  color: #888;
+  font-size: 1rem;
+}
+
+.timeline-content {
+  background-color: #fff;
+  padding: 20px;
+  border-left: 6px solid #f9844a;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  flex: 1;
+}
+
+.event-text {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.company-timeline-wrapper {
+  background: #fff9f3; /* hoặc giữ nguyên background cũ */
+  width: 100%;
+}
+
+.company-timeline-inner {
+  width: 60%;
+  margin: 0 auto;
+}

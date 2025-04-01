@@ -1,19 +1,22 @@
 <template>
     <NavBar :name="userName" />
-    <section class="article">
-    <div class="article-heading  text-center">
+    <section class="achievement">
+    <div class="achievement-heading  text-center">
       <h3>ア会社です。</h3>
     </div>
-    <div class="article-list-container">
-      <div v-for="article in articleData" :key="article.id" class="project-card">
+    <div class="achievement-list-container">
+      <div v-for="achievement in achievementData" :key="achievement.id" class="project-card">
         <div class="project-image-wrapper">
-          <img v-if="article.image" :src="url + article.image" class="project-image" />
+          <img v-if="achievement.image_path" :src="url + achievement.image_path" class="project-image" />
           <div class="project-overlay">
             <div class="project-info">
-              <h5>{{ article.name }}</h5>
-              <p>{{ article.description }}</p>
+              <h5>{{ achievement.title }}</h5>
+              <p>{{ achievement.category }}</p>
+              <p>{{ achievement.date }}</p>
+              <p>{{ achievement.summary }}</p>
+              <p>{{ achievement.description }}</p>
               <RouterLink
-                :to="{ name: 'articleDetail', params: { articleId: article.id } }"
+                :to="{ name: 'achievementDetail', params: { achievementId: achievement.id } }"
                 class="btn btn-light btn-sm"
               >
                 Xem chi tiết
@@ -25,11 +28,11 @@
     </div>
     <router-link
       v-if="isLoggedIn && userRole === 1"
-      to="/article-list"
+      to="/achievement-list"
       class="btn btn-primary"
       style="position: absolute; bottom: 20px; right: 20px;"
     >
-      Manage articles
+      Manage achievements
     </router-link>
   </section>
   <CompanyHistory />
@@ -40,7 +43,7 @@
 import NavBar from "@/components/NavBar.vue";
 import axios from "axios";
 import Footer from "@/views/home/Footer.vue";
-import "@/assets/css/articlehome.css";
+import "@/assets/css/achievement.css";
 import CompanyHistory from '@/views/companyhistory/CompanyHistoryView.vue';
 
 export default {
@@ -51,28 +54,27 @@ export default {
   },
   data() {
     return {
-      articleData: [],
-      url: 'http://localhost/web_company/web_gioi_thieu_cty_be/storage/app/public/articles/',
+      achievementData: [],
+      url: 'http://localhost/web_company/web_gioi_thieu_cty_be/storage/app/public/achievements/',
       isLoggedIn: !!localStorage.getItem("token"),
       userRole: parseInt(localStorage.getItem("role_id")) || null,
     };
   },
   mounted() {
-    this.fetchArticleData();
+    this.fetchAchievementData();
   },
   methods: {
-    async fetchArticleData() {
+    async fetchAchievementData() {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/article", {
+        const response = await axios.get("http://127.0.0.1:8000/api/achievements", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("Article data fetched:", response.data.data);
-        this.articleData = response.data.data;
+        this.achievementData = response.data.data;
       } catch (error) {
-        console.error("Error fetching article data:", error);
+        console.error("Error fetching achievement data:", error);
       }
     },
   },
