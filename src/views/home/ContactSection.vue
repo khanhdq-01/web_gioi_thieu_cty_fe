@@ -1,36 +1,35 @@
-<template lang="">
-    <section class="contact py-5 bg-light">
-      <div class="container">
-        <h2 class="text-center mb-5">Contact Us</h2>
-        <div class="row">
-          <div class="col-md-6 mx-auto">
-            <form @submit.prevent="submitForm">
-              <div class="mb-3">
-                <input type="text" class="form-control" placeholder="Your Name" v-model="formData.name" required />
-              </div>
-              <div class="mb-3">
-                <input type="email" class="form-control" placeholder="Your Email" v-model="formData.email" required />
-              </div>
-              <div class="mb-3">
-                <input type="tel" class="form-control" placeholder="Your Phone" v-model="formData.phone" required />
-              </div>
-              <div class="mb-3">
-                <textarea class="form-control" rows="5" placeholder="Your Message" v-model="formData.message" required></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">Send Message</button>
-            </form>
-            <p v-if="successMessage" class="text-success mt-3">{{ successMessage }}</p>
-            <p v-if="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
-          </div>
+<template>
+  <section class="contact-section py-5">
+    <div class="container text-center">
+      <div class="contact-heading text-center py-3">
+      <h3>ームベト</h3>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <form @submit.prevent="submitForm" class="form-box">
+            <input type="text" class="form-input" placeholder="Your Name" v-model="formData.name" required />
+            <input type="email" class="form-input" placeholder="Your Email" v-model="formData.email" required />
+            <input type="tel" class="form-input" placeholder="Your Phone" v-model="formData.phone" required />
+            <textarea class="form-input" rows="5" placeholder="Your Message" v-model="formData.message" required></textarea>
+            <button type="submit" class="submit-btn">Send Message</button>
+          </form>
         </div>
       </div>
-    </section>
+    </div>
+
+    <!-- Tooltip -->
+    <div v-if="showSuccessTooltip" class="center-tooltip">
+      {{ successMessage }}
+    </div>
+  </section>
 </template>
+
 <script>
 import axios from 'axios';
+import "@/assets/css/contact.css";
 
 export default {
-    name: "ContactSection",
+  name: "ContactSection",
   data() {
     return {
       formData: {
@@ -41,23 +40,22 @@ export default {
       },
       successMessage: '',
       errorMessage: '',
+      showSuccessTooltip: false,
     };
   },
   methods: {
     async submitForm() {
       try {
         const response = await axios.post('http://127.0.0.1:8000/api/user-info', this.formData);
-        this.successMessage = response.data.message;
-        this.errorMessage = '';
-        this.formData = { name: '', email: '', phone: '', message: '' }; // Reset form
+        this.successMessage = response.data.message || "Message sent successfully!";
+        this.formData = { name: '', email: '', phone: '', message: '' };
+        this.showSuccessTooltip = true;
+        setTimeout(() => this.showSuccessTooltip = false, 2000);
       } catch (error) {
-        this.errorMessage = error.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại.';
         this.successMessage = '';
+        this.errorMessage = 'Something went wrong. Please try again.';
       }
-    },
-  },
+    }
+  }
 };
 </script>
-<style scoped>
-    
-</style>

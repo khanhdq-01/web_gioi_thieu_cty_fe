@@ -1,0 +1,132 @@
+
+.hero{
+  background: #f8f9fa;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: visible;
+  text-align: center;
+  height: 65vh;
+  background: #fff9f3; /* hoặc giữ nguyên background cũ */
+  width: 100%;
+}
+.about-list-container {
+  margin: 0 auto;
+  margin-top: 0;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.hero-heading {
+  text-align: center;
+  font-size: 1.2rem; /* to hơn */
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 20px;
+  font-weight: 700;
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 4px;
+  width: 0;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  opacity: 0;
+}
+
+.hero-heading:hover::after {
+  width: 80px;
+  opacity: 1;
+}
+
+
+.about-item {
+  display: flex;
+  flex-direction: row-reverse; /* Ảnh bên phải */
+  align-items: center;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: -60px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  padding: 20px;
+  gap: 10px;;
+}
+
+.about-image-container,
+.about-text-container {
+  padding: 10px;
+  width: 100%;
+}
+
+.about-image-container {
+  flex: 1;
+}
+
+.about-text-container {
+  flex: 1;
+  text-align: justify;
+  text-indent: 2em;
+  line-height: 1.6;
+}
+
+.about-title {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #0d0d0e;
+  letter-spacing: 1.5px;
+  line-height: 1.4; /* giúp không cắt chữ */
+  text-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  word-break: break-word; /* xuống dòng an toàn */
+}
+
+.about-title:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 10px rgba(217, 221, 226, 0.4);
+}
+
+.about-image {
+  width: 80%;
+  height: auto;
+  max-height: 400px;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.about-image-container:hover .about-image {
+  transform: scale(1.05) rotate(1deg);
+  filter: brightness(1.05) contrast(1.1);
+}
+
+
+/* Mobile layout: ảnh xuống dưới */
+@media (max-width: 767px) {
+  .about-item {
+    flex-direction: column;
+  }
+
+  .about-text-container {
+    text-align: center;
+    text-indent: 0;
+  }
+
+  .about-title {
+    font-size: 1.5rem;
+  }
+
+  .about-image {
+    max-height: 250px;
+  }
+}

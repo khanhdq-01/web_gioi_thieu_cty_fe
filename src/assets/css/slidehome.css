@@ -1,0 +1,65 @@
+.hero-header {
+  position: relative;
+  height: 600px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 25px rgba(0, 123, 255, 0.4);
+  overflow: hidden;
+  border-radius: 0;
+  perspective: 1000px; /* để hiệu ứng 3D xoay đẹp hơn */
+}
+
+/* Marquee chạy ngang ở giữa màn hình */
+.marquee-wrapper {
+  margin-top: 100px;
+  position: absolute;
+  top: 35%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 60px;
+  overflow: hidden;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 3rem;
+  font-weight: 700;
+  color: rgb(242, 248, 248);
+  text-shadow: 2px 2px 5px black;
+
+  /* 2 animation nối tiếp nhau */
+  animation: text-rotateIn 1.2s ease-out forwards, marquee-scroll 30s linear infinite;
+  animation-delay: 2s, 4s;
+  opacity: 0;
+  transform-origin: center;
+  backface-visibility: hidden;
+}
+
+/* Hiệu ứng vào giống PowerPoint (xoay trụ 3D) */
+@keyframes text-rotateIn {
+  0% {
+    opacity: 0;
+    transform: rotateY(90deg) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
+/* Hiệu ứng marquee chạy ngang */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

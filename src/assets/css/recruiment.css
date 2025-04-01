@@ -1,0 +1,124 @@
+.job-section {
+    padding: 3rem 1rem;
+    background: linear-gradient(to bottom right, #f4f7fa, #e9eff5);
+    min-height: 70vh;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .job-heading h3 {
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 40px;
+    font-weight: 600;
+    color: #333;
+    letter-spacing: 1px;
+  }
+  
+  .job-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 0;
+    list-style: none;
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+  
+  .job-card {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 6px solid #007bff;
+  }
+  
+  .job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+  
+  .job-card h3 {
+    font-size: 1.4rem;
+    color: #007bff;
+    margin-bottom: 0.5rem;
+  }
+  
+  .job-card p {
+    font-size: 0.95rem;
+    color: #333;
+    margin: 0.4rem 0;
+  }
+  
+  .job-admin-controls,
+  .job-card > div:last-child {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .text-muted {
+    font-style: italic;
+    color: #888;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  /* Layout cha */
+.job-section{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 100vh; /* Đảm bảo chiều cao tối thiểu là toàn màn hình */
+  }
+  
+  /* Khu vực nội dung (đẩy footer xuống nếu cần) */
+ .job-list{
+    flex: 1; /* Đẩy footer xuống cuối */
+  }
+  
+  /* Danh sách công việc */
+  .job-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    padding: 40px 20px;
+    background: linear-gradient(to bottom, #eef2f7, #f8fafc);
+    justify-content: center;
+    width: 60%;
+    margin: 0 auto; /* Căn giữa theo chiều ngang */
+  }
+
+  
+  /* Hiệu ứng thẻ */
+  .job-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.4s ease;
+  }
+  
+  .project-card:hover, .job-card:hover {
+    transform: translateY(-8px);
+  }
+  /* Nút "Manage" */
+.btn-primary {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }

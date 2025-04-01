@@ -1,0 +1,92 @@
+/* Layout chính */
+.article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(to bottom, #ffffff, #f0f4f8);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 60%;
+  margin: 20px auto;
+}
+
+.article-heading h3 {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 40px;
+  font-weight: 600;
+  color: #333;
+  letter-spacing: 1px;
+}
+
+
+.article-list-container {
+  grid-template-columns: repeat(3, 1fr);
+  display: grid;
+  gap: 20px; /* Khoảng cách giữa các thẻ */
+  width: 100%;
+  padding: 20px;
+  align-items: center; /* Căn giữa các thẻ theo chiều ngang */
+}
+
+.project-article-card {
+  width: 80%; /* Đặt chiều rộng cố định cho thẻ */
+  max-width: 800px; /* Giới hạn chiều rộng tối đa */
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-article-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.project-article-image-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.project-article-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.project-article-card:hover .project-image {
+  transform: scale(1.1);
+}
+
+.project-article-title {
+  padding: 15px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .project-card {
+    width: 100%; /* Chiếm toàn bộ chiều rộng trên màn hình nhỏ */
+  }
+}
+
+/* Nút quản lý bài viết */
+.manage-articles-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.manage-articles-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}

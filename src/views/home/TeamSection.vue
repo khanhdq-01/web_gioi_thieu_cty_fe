@@ -1,96 +1,66 @@
-<template lang="">
-    <section class="team py-5">
-      <div class="container">
-        <h2 class="text-center mb-5">Our Team</h2>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card team-card">
-              <img src="@/assets/images/h.jpg" alt="Placeholder Image" />
-              <div class="card-body">
-                <h5 class="card-title">QUOC KHANH</h5>
-                <p class="card-text">CEO & Founder</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card team-card">
-              <img src="@/assets/images/e.jfif" alt="Placeholder Image" />
-              <div class="card-body">
-                <h5 class="card-title">John Doe</h5>
-                <p class="card-text">CEO</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card team-card">
-              <img src="@/assets/images/P.jfif" alt="Placeholder Image" />
-              <div class="card-body">
-                <h5 class="card-title">PHUONG</h5>
-                <p class="card-text">Lead Developer</p>
-              </div>
-            </div>
-          </div>
+<template>
+  <section>
+    <div class="member text-center py-5 bg-light">
+      <div class="member-heading text-center py-3">
+      <h3>高品質なサ</h3>
+    </div>
+    <div class="member-list-container">
+      <div v-for="(member, index) in memberData" :key="member.id" class="member-item">
+        <div class="member-image-container">
+          <img v-if="member.image_path" :src="url + member.image_path" class="member-image" />
+        </div>
+        <div class="member-text-container">
+          <h5 class="member-title">{{ member.name }}</h5>
+          <h5 class="member-title">{{ member.position }}</h5>
+          <h5 class="member-title">{{ member.description }}</h5>
         </div>
       </div>
-    </section>
+    </div>
+
+    <router-link
+      v-if="isLoggedIn && userRole === 1"
+      to="/member-list"
+      class="btn btn-outline-primary position-absolute end-0 bottom-0 m-3"
+      style="position: absolute; bottom: 20px; right: 20px;"
+    >
+      Manage members
+    </router-link>
+  </div>
+  </section>
 </template>
+
 <script>
+import axios from "axios"
+import "@/assets/css/memberhome.css";
+
 export default {
-    name: "TeamSection",
-}
+  name: "TeamSection",
+  data() {
+    return {
+      memberData: [],
+      url: 'http://localhost/web_company/web_gioi_thieu_cty_be/storage/app/public/members/',
+      isLoggedIn: !!localStorage.getItem("token"),
+      userRole: parseInt(localStorage.getItem("role_id")) || null,
+    };
+  },
+  mounted() {
+    this.fetchMemberData();
+  },
+  methods: {
+    async fetchMemberData() {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/member", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        this.memberData = response.data.data;
+      } catch (error) {
+        console.error("Error fetching member data:", error);
+      }
+    },
+  },
+};
 </script>
-<style scoped>
-    .team {
-  background-color: #f8f9fa;
-}
 
-h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.team-card {
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-  text-align: center;
-}
-
-.team-card:hover {
-  transform: scale(1.05);
-}
-
-.team-card img {
-  width: 100%;
-  height: 350px; /* Giữ kích thước ảnh đồng đều */
-  object-fit: cover; /* Đảm bảo ảnh không bị méo hoặc tràn */
-  border-radius: 10px 10px 0 0;
-}
-
-.card-body {
-  padding: 15px;
-  background: #fff;
-}
-
-.card-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #222;
-  margin-bottom: 5px;
-}
-
-.card-text {
-  font-size: 1rem;
-  color: #666;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .team-card img {
-    height: 250px; /* Giảm chiều cao ảnh trên màn hình nhỏ */
-  }
-}
-
-</style>

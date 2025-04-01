@@ -1,0 +1,89 @@
+.company-infor-section {
+  background: #f8f9fa;
+  padding: 60px 20px;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.company-info {
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  width: 60%;
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border: 1px solid #eee;
+}
+
+.company-info-heading {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 40px;
+  font-weight: 600;
+  color: #333;
+  letter-spacing: 1px;
+}
+
+/* Table-like layout */
+.company-info-row {
+  display: flex;
+  justify-content: flex-start;
+  border-top: 1px solid #ddd;
+  padding: 15px 0;
+}
+
+.company-info-row:first-child {
+  border-top: none;
+}
+
+.company-info-title {
+  flex: 0 0 150px;
+  width: 180px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #222;
+  text-align: left; /* đảm bảo không bị canh giữa */
+}
+
+.company-info-content {
+  font-size: 15px;
+  color: #333;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: left; /* đảm bảo không bị canh giữa */ 
+}
+
+.company-info-content a {
+  color: #e63946;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.company-info-content a:hover {
+  color: #ff4d4d;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .company-info {
+    width: 95%;
+    padding: 25px;
+  }
+
+  .company-info-heading {
+    font-size: 1.3rem;
+  }
+
+  .company-info-row {
+    flex-direction: column;
+  }
+
+  .company-info-title {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+}

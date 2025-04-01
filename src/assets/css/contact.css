@@ -1,0 +1,131 @@
+/* Nền sáng hiện đại */
+.contact-section {
+  background: #fff9f3;
+    color: #333;
+    width: 100%;
+
+  }
+  .container {
+    width: 60%;
+    margin: 0 auto;
+  }
+  .contact-heading {
+    text-align: center;
+    font-size: 1.2rem; /* to hơn */
+    margin-bottom: 40px;
+    position: relative;
+    padding-bottom: 20px;
+    font-weight: 700;
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .contact-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 4px;
+    width: 0;
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    opacity: 0;
+  }
+  
+  .contact-heading:hover::after {
+    width: 80px;
+    opacity: 1;
+  }
+  
+  /* Tiêu đề */
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+  
+  /* Hộp form */
+  .form-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Ô input */
+  .form-input {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #f9fafb;
+    color: #111;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-input:focus {
+    border-color: #3b82f6;
+    outline: none;
+    background: #fff;
+  }
+  
+  .form-input::placeholder {
+    color: #9ca3af;
+  }
+  
+  /* Nút gửi */
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(to right, #3b82f6, #06b6d4);
+    border: none;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  }
+  
+  /* Tooltip ở giữa */
+  .center-tooltip {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #10b981;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    z-index: 9999;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 2s ease-in-out forwards;
+  }
+  
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+    }
+    10%,
+    90% {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -40%);
+    }
+  }

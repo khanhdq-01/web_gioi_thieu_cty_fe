@@ -1,0 +1,167 @@
+/* Dịch vụ - Service Section */
+
+/* Dịch vụ - Service Section */
+
+.services{
+  background: #f8f9fa;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: visible;
+  text-align: center;
+  height: 50vh;
+  width: 100%;;
+}
+
+.container-services{
+  margin: 0 auto;
+  margin-top: 0;
+  width: 60%;
+  margin: 0 auto;
+
+}
+
+.service-heading {
+  text-align: center;
+  font-size: 1.2rem; /* to hơn */
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 20px;
+  font-weight: 700;
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.service-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 4px;
+  width: 0;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  opacity: 0;
+}
+
+.service-heading:hover::after {
+  width: 80px;
+  opacity: 1;
+}
+
+.services .container {
+  text-align: center;
+}
+
+/* Danh sách dịch vụ */
+.service-list {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 0.rem;
+  padding-bottom: 20px;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;  
+  justify-content: center;  /* IE & Edge */
+}
+
+.service-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Nút scroll trái/phải */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #949ca7; /* màu xám than nhẹ */
+  font-size: 1.6rem;
+  cursor: pointer;
+  z-index: 10;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-btn.left {
+  left: -15px;
+}
+
+.scroll-btn.right {
+  right: -15px;
+}
+
+.scroll-btn:hover {
+  color: #0ea5e9; /* xanh tech */
+  transform: translateY(-50%) scale(1.1);
+  text-shadow: 0 0 4px rgba(14, 165, 233, 0.4);
+}
+
+/* Thẻ card dịch vụ */
+.service-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  min-width: 250px;
+}
+
+.service-card:hover {
+  transform: rotateY(5deg) scale(1.03);
+  box-shadow: 0 10px 30px rgba(0, 123, 255, 0.25);
+}
+
+/* Icon trong card */
+.service-icon {
+  font-size: 2.5rem;
+  color: #007bff;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: 0.4s;
+}
+
+.service-card:hover .service-icon {
+  transform: rotateZ(360deg);
+}
+
+/* Responsive layout */
+@media (min-width: 992px) {
+  .col-md-4 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+@media (max-width: 991px) and (min-width: 576px) {
+  .col-sm-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+@media (max-width: 575px) {
+  .col-sm-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+/* Animation vào */
+@keyframes glow-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8) rotateX(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotateX(0deg);
+  }
+}

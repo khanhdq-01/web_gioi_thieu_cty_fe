@@ -1,0 +1,125 @@
+.apply-container-job {
+    max-width: 720px;
+    margin: 60px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    animation: fadeInUp 0.7s ease;
+  }
+  
+  .apply-title-job {
+    font-size: 30px;
+    text-align: center;
+    font-weight: 700;
+    color: #0f2027;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  
+  .apply-title-job::after {
+    content: "";
+    height: 4px;
+    width: 60px;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    display: block;
+    margin: 12px auto 0;
+    border-radius: 2px;
+  }
+  
+  .apply-form-job {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .apply-field-job {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .apply-field-job label {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #37474f;
+  }
+  
+  .apply-field-job input[type="text"],
+  .apply-field-job input[type="email"],
+  .apply-field-job input[type="file"],
+  .apply-field-job input {
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #cfd8dc;
+    background-color: #f5fafd;
+    transition: all 0.3s ease;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  
+  .apply-field-job input:focus {
+    border-color: #00c6ff;
+    box-shadow: 0 0 0 3px rgba(0, 198, 255, 0.2);
+    outline: none;
+    background-color: #ffffff;
+  }
+  
+  .apply-submit-btn-job {
+    padding: 14px;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .apply-submit-btn-job:hover {
+    background: linear-gradient(to right, #0072ff, #00c6ff);
+    box-shadow: 0 6px 20px rgba(0, 114, 255, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  .job-footer-job {
+    text-align: center;
+    margin-top: 40px;
+    animation: fadeInUp 1s ease;
+  }
+  
+  .job-btn-secondary-job {
+    display: inline-block;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+    color: #333;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    font-size: 15px;
+  }
+  
+  .job-btn-secondary-job:hover {
+    background: linear-gradient(135deg, #e0f7ff, #c2e9fb);
+    color: #0072ff;
+    box-shadow: 0 6px 18px rgba(0, 114, 255, 0.25);
+    transform: translateY(-2px);
+  }
+  
+  /* Animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

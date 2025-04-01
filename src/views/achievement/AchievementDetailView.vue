@@ -1,28 +1,26 @@
 <template>
   <NavBar :name="userName" />
 
-  <section class="hero-details">
-    <div v-if="isLoading" class="loading">Loading...</div>
-    <div v-else-if="error" class="error">Failed to load article.</div>
-    <div v-else-if="articleData">
-      <div class="article-details">
-        <h3>Chi tiết bài viết</h3>
-      </div>
+  <section class="hero-details" v-if="achievementData">
+    <div class="achievement-details">
+      <h3>Chi tiết bài viết</h3>
+    </div>
 
-      <div class="article-item">
-        <div class="article-image-details" v-if="articleData.image">
-          <img :src="url + articleData.image" class="article-image" :alt="articleData.name" loading="lazy" />
-          <p class="image-caption">{{ articleData.name }} Image</p>
-        </div>
-        <div class="article-text-details">
-          <h5 class="article-name">{{ articleData.name }}</h5>
-          <div class="article-description" v-html="articleData.description"></div>
-        </div>
+    <div class="achievement-item-details">
+      <div class="achievement-image-details" v-if="achievementData.image_path">
+        <img :src="url + achievementData.image_path" class="achievement-image" />
       </div>
+      <div class="achievement-text-details">
+        <h5 class="achievement-tilte-detail">{{ achievementData.title }}</h5>
+        <p class="achievement-category-detail">{{ achievementData.category }}</p>
+        <p class="achievement-date-detail">{{ achievementData.date }}</p>
+        <p class="achievement-date-detail">{{ achievementData.summany }}</p>
+        <p class="achievement-description-detail">{{ achievementData.description }}</p>
+      </div>
+    </div>
 
-      <div class="action-buttons mb-3">
-        <router-link to="/article" class="btn btn-secondary ms-2" aria-label="Back to articles">Quay lại</router-link>
-      </div>
+    <div class="mb-3">
+      <router-link to="/achievement" class="btn btn-secondary ms-2">Quay lại</router-link>
     </div>
   </section>
 </template>
@@ -37,43 +35,37 @@ export default {
   },
   data() {
     return {
-      articleData: null,
-      url: 'http://localhost/web_company/web_gioi_thieu_cty_be/storage/app/public/articles/',
+      achievementData: null, // ban đầu là null
+      url: 'http://localhost/web_company/web_gioi_thieu_cty_be/storage/app/public/achievements/',
       userName: localStorage.getItem('name') || '',
-      isLoading: false,
-      error: null,
     };
   },
   mounted() {
-    this.fetchArticleData();
+    this.fetchachievementData();
   },
   methods: {
-    async fetchArticleData() {
-      this.isLoading = true;
-      this.error = null;
+    async fetchachievementData() {
       const token = localStorage.getItem("token");
-      const articleId = this.$route.params.articleId;
+      const achievementId = this.$route.params.achievementId;
 
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/article/${articleId}`, {
+        const response = await axios.get(`http://127.0.0.1:8000/api/achievements/${achievementId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        this.articleData = response.data.data || response.data; // Handle nested data
-        console.log("Article fetched:", this.articleData);
+
+        this.achievementData = response.data;
+        console.log("achievement fetched:", this.achievementData);
       } catch (error) {
-        console.error("Error fetching article data:", error);
-        this.error = error.message || 'Failed to load article';
-      } finally {
-        this.isLoading = false;
+        console.error("Error fetching achievement data:", error);
       }
     },
   },
 };
 </script>
 <style scoped>
-/* article-details.css */
+/* achievement-details.css */
 .hero-details {
   padding: 4rem 2rem;
   background: linear-gradient(135deg, #f5f7fa 0%, #e0e7ff 100%); /* Light tech gradient */
@@ -83,7 +75,7 @@ export default {
   color: #1a1a1a;
 }
 
-/* Particle Background */
+/* Subtle Particle Background */
 .hero-details::before {
   content: '';
   position: absolute;
@@ -103,31 +95,25 @@ export default {
   100% { transform: translateY(-30px); }
 }
 
-/* Loading and Error States */
-.loading, .error {
-  text-align: center;
-  padding: 4rem;
-  font-size: 1.5rem;
-  color: #f9a8d4;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e0e7ff 100%);
-  position: relative;
-  z-index: 1;
-}
-
 /* Title Section */
-.article-details {
-  text-align: center;
-  margin-bottom: 3.5rem;
-  position: relative;
-  z-index: 1;
+
+
+.achievement-details h3 {
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  background: linear-gradient(45deg, #7dd3fc, #c6c6c6, #7dd3fc);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  justify-self: center;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 15px rgba(125, 211, 252, 0.5);
+  animation: gradientShift 4s ease-in-out infinite, fadeInGlow 1s ease-out;
 }
 
 /* Neon Underline */
-.article-details h3::after {
+.achievement-details h3::after {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -164,8 +150,10 @@ export default {
 }
 
 /* Content Section */
-.article-item {
-  max-width: 1000px;
+.achievement-item-details {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
   margin: 0 auto;
   background: rgba(255, 255, 255, 0.95); /* Glassmorphism */
   backdrop-filter: blur(10px);
@@ -179,89 +167,72 @@ export default {
 }
 
 /* Image Section */
-.article-image-details {
-  width: 100%;
-  margin-bottom: 2rem;
+.achievement-image-details {
+  flex: 1;
+  max-width: 50%;
   overflow: hidden;
   border-radius: 15px;
-  position: relative;
   transition: transform 0.5s ease;
 }
 
-.article-image {
+.achievement-image {
   width: 100%;
-  height: auto;
-  max-height: 400px;
+  height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.article-image-details:hover .article-image {
-  transform: scale(1.05);
-}
-
-.image-caption {
-  font-size: 0.9rem;
-  color: #666;
-  text-align: center;
-  margin-top: 0.5rem;
-  animation: fadeInText 1.6s ease-out;
+.achievement-image-details:hover .achievement-image {
+  transform: scale(1.1);
 }
 
 /* Text Section */
-.article-text-details {
+.achievement-text-details {
+  flex: 1;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.article-name {
-  font-size: 2.2rem;
+.achievement-tilte-detail {
+  font-size: 2rem;
   font-weight: 700;
   color: #7dd3fc;
   text-shadow: 0 0 8px rgba(125, 211, 252, 0.3);
-  margin-bottom: 1.5rem;
   animation: fadeInText 1.2s ease-out;
-  line-height: 1.3;
 }
 
-.article-description {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #333;
-  animation: fadeInText 1.4s ease-out;
-  text-align: justify;
-}
-
-.article-description :deep(h1, h2, h3, h4, h5, h6) {
-  color: #7dd3fc;
-  margin: 1rem 0;
+.achievement-category-detail {
+  font-size: 1.2rem;
   font-weight: 600;
+  color: #f9a8d4;
+  background: rgba(249, 168, 212, 0.1);
+  padding: 0.3rem 1rem;
+  border-radius: 12px;
+  display: inline-block;
+  animation: fadeInText 1.4s ease-out;
 }
 
-.article-description :deep(p) {
-  margin: 0.5rem 0;
+.achievement-date-detail {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #555;
+  animation: fadeInText 1.6s ease-out;
 }
 
-.article-description :deep(ul, ol) {
-  margin: 1rem 0;
-  padding-left: 2rem;
+.achievement-description-detail {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  animation: fadeInText 1.8s ease-out;
 }
 
-.article-description :deep(img) {
-  max-width: 100%;
-  border-radius: 10px;
-  margin: 1rem 0;
-}
-
-/* Buttons */
-.action-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-start;
-}
-
-.btn-secondary, .btn-primary {
+/* Back Button */
+.btn-secondary {
   display: inline-block;
   padding: 0.8rem 2rem;
+  background: linear-gradient(45deg, #7dd3fc);
   color: #1a1a1a;
   border: none;
   border-radius: 25px;
@@ -271,15 +242,16 @@ export default {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(45deg, #7dd3fc, #f9a8d4);
+  margin-top: 2rem;
+  animation: fadeInText 2s ease-out;
 }
 
-.btn-secondary:hover, .btn-primary:hover {
+.btn-secondary:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(125, 211, 252, 0.7);
 }
 
-.btn-secondary::before, .btn-primary::before {
+.btn-secondary::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -292,7 +264,7 @@ export default {
   transition: width 0.6s ease, height 0.6s ease;
 }
 
-.btn-secondary:hover::before, .btn-primary:hover::before {
+.btn-secondary:hover::before {
   width: 200px;
   height: 200px;
 }
@@ -326,68 +298,79 @@ export default {
     padding: 2rem 1rem;
   }
 
-  .article-details h3 {
+  .achievement-details h3 {
     font-size: 2.5rem;
   }
 
-  .article-details h3::after {
+  .achievement-details h3::after {
     width: 150px;
   }
 
-  .article-item {
+  .achievement-item-details {
+    flex-direction: column;
     padding: 1.5rem;
   }
 
-  .article-image-details {
-    max-height: 300px;
+  .achievement-image-details {
+    max-width: 100%;
+    height: 300px;
   }
 
-  .article-name {
+  .achievement-text-details {
+    padding: 0;
+  }
+
+  .achievement-tilte-detail {
     font-size: 1.8rem;
   }
 
-  .article-description {
+  .achievement-category-detail {
+    font-size: 1.1rem;
+  }
+
+  .achievement-date-detail {
     font-size: 1rem;
   }
 
-  .action-buttons {
-    flex-direction: column;
-    gap: 0.8rem;
+  .achievement-description-detail {
+    font-size: 0.95rem;
   }
 
-  .btn-secondary, .btn-primary {
+  .btn-secondary {
     padding: 0.7rem 1.5rem;
     font-size: 0.95rem;
-    width: 100%;
-    text-align: center;
   }
 }
 
 @media (max-width: 480px) {
-  .article-details h3 {
+  .achievement-details h3 {
     font-size: 2rem;
     letter-spacing: 2px;
   }
 
-  .article-details h3::after {
+  .achievement-details h3::after {
     width: 120px;
   }
 
-  .article-item {
+  .achievement-item-details {
     padding: 1rem;
   }
 
-  .article-image-details {
-    max-height: 250px;
+  .achievement-image-details {
+    height: 250px;
   }
 
-  .article-name {
+  .achievement-tilte-detail {
     font-size: 1.6rem;
   }
 
-  .article-description {
-    font-size: 0.95rem;
-    line-height: 1.6;
+  .achievement-category-detail {
+    font-size: 1rem;
+  }
+
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
   }
 }
-</style>
+</style>  

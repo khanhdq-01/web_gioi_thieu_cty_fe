@@ -5,8 +5,8 @@
 
     <!-- Hiển thị danh sách thông tin người dùng -->
     <section class="user-infos py-5">
-      <div class="container">
-        <h2 class="text-center mb-5">User Information</h2>
+      <div class="container-user-infos">
+        <h3 class="text-center mb-5">User Information</h3>
         <div class="row">
           <div class="col-md-8 mx-auto">
             <table class="table table-bordered">
@@ -37,12 +37,7 @@
         </div>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="text-center text-lg-start bg-dark text-white">
-      <!-- Nội dung footer -->
-    </footer>
-  </div>
+    </div>
     </div>
   </template>
     
@@ -52,7 +47,7 @@
     
     export default {
       components: {
-        NavBar,
+        NavBar
       },
       data() {
         return {
@@ -107,13 +102,18 @@
     </script>
     
     <style scoped>
-    .container {
+    .container-user-infos {
       background-color: #f8f9fa;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      flex: 1; /* Đẩy footer xuống cuối */
     }
-    
+    .user-infos {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh; /* Đảm bảo chiều cao tối thiểu là toàn màn hình */
+}
     h3 {
       font-size: 1.5rem;
       font-weight: bold;
